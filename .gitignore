@@ -1,0 +1,13 @@
+node_modules
+dist
+.env
+.env.local
+.vercel
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+vite.log
+chanakya_technical_solutions_responsive_website.jsx
+logo c.png
+photo-1513828583688-c52646db42da.avif
