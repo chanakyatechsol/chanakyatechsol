@@ -914,18 +914,18 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-3 md:py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5 sm:gap-3.5">
+          <div className="flex items-center gap-2.5 sm:gap-4">
             <img
               src="/assets/images/logo.png"
               alt="Chanakya Technical Solutions"
-              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain transition-transform duration-300 hover:scale-105"
+              className="w-11 h-11 sm:w-13 sm:h-13 md:w-15 md:h-15 object-contain transition-transform duration-300 hover:scale-105"
             />
 
             <div>
-              <h1 className="font-serif text-base sm:text-lg md:text-xl font-bold text-sky-950 leading-tight tracking-tight">
+              <h1 className="font-serif text-lg sm:text-xl md:text-2xl lg:text-[26px] font-black text-sky-950 leading-tight tracking-tight">
                 Chanakya Technical Solutions
               </h1>
-              <p className="text-[11px] sm:text-xs text-gray-700 italic font-sans font-medium">
+              <p className="text-xs sm:text-sm text-gray-700 italic font-sans font-semibold">
                 Sustaining the future. One drop at a time
               </p>
             </div>
