@@ -390,6 +390,24 @@ function HeaderWaterAnimation() {
 export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [enquiryMessage, setEnquiryMessage] = useState("");
+
+  // Handle Enquiry click reliably across mobile and desktop
+  const handleEnquire = (subjectName) => {
+    setSelectedService(null);
+    setMobileMenuOpen(false);
+
+    if (subjectName) {
+      setEnquiryMessage(`Hello, I would like to enquire about ${subjectName}.`);
+    }
+
+    setTimeout(() => {
+      const contactEl = document.getElementById("contact");
+      if (contactEl) {
+        contactEl.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 60);
+  };
 
   // Open sub-services modal and push state so phone back button closes modal
   const handleOpenService = (service) => {
@@ -1015,13 +1033,12 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                       </div>
 
                       <div className="p-5 pt-0">
-                        <a
-                          href="#contact"
-                          onClick={handleCloseService}
-                          className="inline-block w-full text-center bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold py-2.5 rounded-lg text-xs border border-sky-200 transition"
+                        <button
+                          onClick={() => handleEnquire(sub.name)}
+                          className="w-full text-center bg-sky-700 hover:bg-sky-800 text-white font-bold py-2.5 rounded-lg text-xs transition shadow-sm"
                         >
                           Enquire For {sub.name}
-                        </a>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -1039,13 +1056,12 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                   <p className="text-gray-600 max-w-2xl mx-auto text-sm leading-relaxed mb-6">
                     {selectedService.description}
                   </p>
-                  <a
-                    href="#contact"
-                    onClick={handleCloseService}
-                    className="inline-block bg-sky-700 hover:bg-sky-800 text-white font-semibold px-6 py-3 rounded-lg text-sm transition"
+                  <button
+                    onClick={() => handleEnquire(selectedService.title)}
+                    className="inline-block bg-sky-700 hover:bg-sky-800 text-white font-semibold px-6 py-3 rounded-lg text-sm transition shadow-md"
                   >
                     Request Technical Consultation
-                  </a>
+                  </button>
                 </div>
               )}
             </div>
@@ -1217,8 +1233,10 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
               <textarea
                 rows="5"
-                placeholder="Message"
-                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700"
+                value={enquiryMessage}
+                onChange={(e) => setEnquiryMessage(e.target.value)}
+                placeholder="How can we help you? Write your message or technical requirements here..."
+                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700 text-base sm:text-sm"
               ></textarea>
 
               <button className="bg-sky-700 hover:bg-sky-800 text-white py-3 rounded font-medium">
