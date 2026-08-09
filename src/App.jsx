@@ -399,7 +399,7 @@ function InteractiveClientScroller({ clientLogos }) {
     if (!scrollContainer) return;
 
     let animationFrameId;
-    const speed = 1.0;
+    const speed = 2.8;
 
     const step = () => {
       if (scrollContainer && !isPausedRef.current && !isDraggingRef.current) {
@@ -513,6 +513,7 @@ function InteractiveClientScroller({ clientLogos }) {
 
 export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
+  const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [enquiryMessage, setEnquiryMessage] = useState("");
   const [formData, setFormData] = useState({
@@ -522,6 +523,39 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const testimonials = [
+    {
+      id: 1,
+      title: "Client Appreciation Certificate",
+      image: "/assets/images/testimonials/1.jpeg",
+      subtitle: "Water & Environmental Treatment Excellence"
+    },
+    {
+      id: 2,
+      title: "Performance & Quality Recommendation",
+      image: "/assets/images/testimonials/2.jpeg",
+      subtitle: "Wastewater & Effluent Plant Execution"
+    },
+    {
+      id: 3,
+      title: "Operational Feedback & Certificate",
+      image: "/assets/images/testimonials/3.jpeg",
+      subtitle: "Industrial Water Management"
+    },
+    {
+      id: 4,
+      title: "Technical Engineering Endorsement",
+      image: "/assets/images/testimonials/4.jpeg",
+      subtitle: "Zero Liquid Discharge & Reuse"
+    },
+    {
+      id: 5,
+      title: "Service Excellence Certificate",
+      image: "/assets/images/testimonials/5.jpeg",
+      subtitle: "Dedicated Support & Client Satisfaction"
+    }
+  ];
 
   // Dual Email + WhatsApp Contact Form Submission Handler
   const handleContactSubmit = async (e) => {
@@ -883,6 +917,9 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               <a href="#services-products" className="hover:text-sky-700 transition">
                 Services & Products
               </a>
+              <a href="#testimonials" className="hover:text-sky-700 transition">
+                Testimonials
+              </a>
               <a href="#contact" className="hover:text-sky-700 transition">
                 Contact
               </a>
@@ -938,6 +975,13 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
                 Services & Products
+              </a>
+              <a
+                href="#testimonials"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                Testimonials
               </a>
               <a
                 href="#contact"
@@ -1322,6 +1366,107 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
           </div>
         </div>
       </section>
+
+      {/* Client Testimonials & Certificates Section */}
+      <section id="testimonials" className="py-16 md:py-24 bg-slate-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-14">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 mb-3">
+              Client Endorsements & Certificates
+            </span>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-sky-950 mb-4">
+              Client Testimonials & Recommendations
+            </h3>
+            <p className="text-gray-600 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
+              Read real feedback, performance certificates, and appreciation letters from our esteemed industrial, institutional, and commercial partners. Click any image to view full size.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {testimonials.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedTestimonial(item)}
+                className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between hover:-translate-y-1"
+              >
+                <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-sky-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                    <span className="bg-sky-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md flex items-center gap-1.5">
+                      <span>🔍 Click to View Certificate</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-5 border-t border-gray-100">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-1 rounded">
+                    Official Certificate
+                  </span>
+                  <h4 className="text-base font-bold text-gray-900 mt-2 group-hover:text-sky-700 transition">
+                    {item.title}
+                  </h4>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {item.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Full-size Testimonial Certificate Lightbox Modal */}
+      {selectedTestimonial && (
+        <div
+          onClick={() => setSelectedTestimonial(null)}
+          className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 p-4 md:p-8 flex items-center justify-center cursor-pointer animate-in fade-in duration-200"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white max-w-4xl w-full rounded-2xl shadow-2xl overflow-hidden border border-gray-200 cursor-default animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
+          >
+            <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+              <div>
+                <h4 className="font-bold text-base md:text-lg text-white">
+                  {selectedTestimonial.title}
+                </h4>
+                <p className="text-xs text-sky-300">
+                  {selectedTestimonial.subtitle}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setSelectedTestimonial(null)}
+                className="bg-white/10 hover:bg-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold transition"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-4 md:p-6 bg-slate-950 overflow-y-auto flex items-center justify-center min-h-[300px]">
+              <img
+                src={selectedTestimonial.image}
+                alt={selectedTestimonial.title}
+                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg border border-slate-800"
+              />
+            </div>
+
+            <div className="bg-gray-100 px-6 py-3 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600">
+              <span>Chanakya Technical Solutions - Client Testimonials</span>
+              <button
+                onClick={() => setSelectedTestimonial(null)}
+                className="bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
+              >
+                Close Certificate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <section id="contact" className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12">
