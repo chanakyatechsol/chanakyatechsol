@@ -799,34 +799,34 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
     {
       id: "4",
       num: "04",
-      title: "Chemical treatment",
+      title: "Chemical treatment solutions",
       category: "Specialty Chemicals",
-      image: "/assets/images/services/chemical-treatment.jpeg",
+      image: "/assets/images/services/Chemical-treatment.jpeg",
       description: "Formulated industrial chemical solutions to prevent scaling, bio-fouling, corrosion, and organic buildup across RO systems, boilers, cooling towers, and ETPs.",
       subServices: [
         {
           name: "Antiscalant",
-          image: "/assets/images/services/antiscalant.jpeg",
+          image: "/assets/images/services/Chemical-treatment.jpeg",
           description: "High-efficiency RO membrane antiscalants for silica, calcium sulfate, and carbonate scale prevention."
         },
         {
           name: "Cleaning chemicals",
-          image: "/assets/images/services/cleaning-chemicals.jpeg",
+          image: "/assets/images/services/Chemical-treatment.jpeg",
           description: "Acidic and alkaline CIP cleaning chemicals for RO, UF, and MBR membrane rejuvenation."
         },
         {
           name: "Descaling chemicals",
-          image: "/assets/images/services/descaling-chemicals.jpeg",
+          image: "/assets/images/services/Chemical-treatment.jpeg",
           description: "Heavy-duty descalers for heat exchangers, boilers, cooling towers, and pipe scale removal."
         },
         {
           name: "Deoiling polymer",
-          image: "/assets/images/services/deoiling-polymer.jpeg",
+          image: "/assets/images/services/Chemical-treatment.jpeg",
           description: "Specialized de-oiling polyelectrolytes and coagulant aids for rapid oil-water phase separation."
         },
         {
           name: "Defoamer",
-          image: "/assets/images/services/defoamer.jpeg",
+          image: "/assets/images/services/Chemical-treatment.jpeg",
           description: "Silicone and non-silicone food/industrial grade anti-foaming agents for aeration tanks and ETP units."
         }
       ]
