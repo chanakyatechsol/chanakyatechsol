@@ -780,6 +780,11 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
       description: "Complete turnkey treatment plants customized for municipal, industrial, commercial, and institutional applications.",
       subServices: [
         {
+          name: "RO Plant (Reverse Osmosis)",
+          image: "/assets/images/services/wtp.jpeg",
+          description: "High-efficiency industrial and commercial Reverse Osmosis (RO) plants for total dissolved solids (TDS) reduction, process water purification, and high-purity water generation."
+        },
+        {
           name: "STP (Sewage Treatment Plant)",
           image: "/assets/images/services/stp.jpeg",
           description: "Biological sewage treatment systems using SBR, MBBR, MBR, and extended aeration processes for clean effluent discharge and reuse."
