@@ -389,11 +389,13 @@ function HeaderWaterAnimation() {
 
 export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setSelectedService(null);
+        setMobileMenuOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -614,7 +616,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
     "https://wa.me/919490316328?text=Hello%20Chanakya%20Technical%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20water%20and%20waste%20treatment%20services.";
 
   return (
-    <div className="font-sans text-gray-800 bg-white">
+    <div className="font-sans text-gray-800 bg-white min-h-screen">
       {/* Executive Header Bar with Background River Journey Animation */}
       <header className="border-b border-sky-200/60 sticky top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm relative overflow-hidden">
         {/* Background Animation Canvas */}
@@ -623,24 +625,24 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-3 md:py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-2.5 sm:gap-3.5">
             <img
               src="/assets/images/logo.png"
               alt="Chanakya Technical Solutions"
-              className="w-12 h-12 md:w-14 md:h-14 object-contain transition-transform duration-300 hover:scale-105"
+              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain transition-transform duration-300 hover:scale-105"
             />
 
             <div>
-              <h1 className="font-serif text-lg md:text-xl font-bold text-sky-950 leading-tight tracking-tight">
+              <h1 className="font-serif text-base sm:text-lg md:text-xl font-bold text-sky-950 leading-tight tracking-tight">
                 Chanakya Technical Solutions
               </h1>
-              <p className="text-xs text-gray-700 italic font-sans font-medium">
+              <p className="text-[11px] sm:text-xs text-gray-700 italic font-sans font-medium">
                 Sustaining the future. One drop at a time
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 md:gap-8">
             <nav className="hidden md:flex gap-7 text-[14px] font-bold text-gray-800">
               <a href="#home" className="hover:text-sky-700 transition">
                 Home
@@ -662,37 +664,105 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             >
               Contact Us
             </a>
+
+            {/* Mobile Menu Hamburger Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle Navigation Menu"
+              className="md:hidden p-2 rounded-lg bg-sky-100/90 text-sky-900 hover:bg-sky-200 transition focus:outline-none border border-sky-200"
+            >
+              {mobileMenuOpen ? (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown Drawer */}
+        {mobileMenuOpen && (
+          <div className="relative z-20 md:hidden bg-white/95 backdrop-blur-lg border-t border-sky-100 px-5 py-4 shadow-lg animate-in slide-in-from-top-2 duration-200">
+            <nav className="flex flex-col gap-2.5 text-base font-bold text-gray-800">
+              <a
+                href="#home"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                About Us
+              </a>
+              <a
+                href="#services-products"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                Services & Products
+              </a>
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                Contact Us
+              </a>
+              <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
+                <a
+                  href="#contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full text-center bg-sky-700 hover:bg-sky-800 text-white font-semibold py-3 rounded-lg text-sm transition shadow-sm"
+                >
+                  Get Direct Consultation
+                </a>
+                <a
+                  href="tel:+919490316328"
+                  className="w-full text-center bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold py-2.5 rounded-lg text-xs border border-sky-200 transition"
+                >
+                  📞 Call Us: +91 9490316328
+                </a>
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
       <section
         id="home"
         className="relative bg-[url('/assets/images/hero-banner.jpg')] bg-cover bg-center"
       >
-        <div className="bg-black/50">
-          <div className="max-w-7xl mx-auto px-4 py-28 md:py-36 text-white">
+        <div className="bg-black/55">
+          <div className="max-w-7xl mx-auto px-4 py-20 sm:py-28 md:py-36 text-white">
             <div className="max-w-3xl">
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 sm:mb-6">
                 Water & Waste Treatment Services
               </h2>
 
-              <p className="text-lg md:text-xl leading-relaxed text-gray-200 mb-8">
+              <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-200 mb-6 sm:mb-8">
                 Professional solutions for water treatment, sewage treatment,
                 effluent management and industrial water systems.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
                 <a
                   href="#services-products"
-                  className="bg-sky-700 hover:bg-sky-800 px-7 py-3 rounded text-white font-medium"
+                  className="w-full sm:w-auto text-center bg-sky-700 hover:bg-sky-800 px-7 py-3 rounded-lg text-white font-semibold transition shadow-md"
                 >
                   Services & Products
                 </a>
 
                 <a
                   href="#contact"
-                  className="border border-white hover:bg-white hover:text-black px-7 py-3 rounded font-medium transition"
+                  className="w-full sm:w-auto text-center border border-white hover:bg-white hover:text-black px-7 py-3 rounded-lg font-semibold transition"
                 >
                   Contact Us
                 </a>
@@ -702,29 +772,29 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         </div>
       </section>
 
-      <section id="about" className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+      <section id="about" className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
             <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 mb-3">
               About The Company
             </span>
-            <h3 className="text-3xl md:text-4xl font-extrabold text-sky-900 mb-6">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-sky-900 mb-5 sm:mb-6">
               Chanakya Technical Solutions
             </h3>
 
-            <p className="text-gray-700 leading-relaxed mb-4 text-justify">
+            <p className="text-gray-700 leading-relaxed mb-4 text-justify text-sm sm:text-base">
               Chanakya Technical Solutions is a technical solutions provider specializing in water and environmental management, offering solutions for water treatment, wastewater treatment, solid waste management, and waste-to-energy applications.
             </p>
 
-            <p className="text-gray-700 leading-relaxed mb-4 text-justify">
+            <p className="text-gray-700 leading-relaxed mb-4 text-justify text-sm sm:text-base">
               The company focuses on providing reliable and efficient technical solutions to address the growing requirements of industries, institutions, municipalities, communities, and residential customers. Its services are aimed at improving water quality, optimizing treatment processes, supporting wastewater reuse, and promoting sustainable waste-management practices.
             </p>
 
-            <p className="text-gray-700 leading-relaxed mb-6 text-justify">
+            <p className="text-gray-700 leading-relaxed mb-6 text-justify text-sm sm:text-base">
               With a focus on technical expertise, customer-oriented solutions, innovation, and dedicated service, Chanakya Technical Solutions works toward delivering customized solutions based on the specific requirements of each application. Its multidisciplinary approach enables the company to address a wide range of challenges associated with water purification, wastewater management, waste treatment, resource recovery, and environmental sustainability.
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-3 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
                 <span className="text-sky-600 font-bold">✓</span>
                 <span className="text-xs font-semibold text-gray-800">Water & Wastewater Treatment</span>
@@ -744,15 +814,15 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative mt-4 md:mt-0">
             <img
               src="/assets/images/about-image.jpg"
               alt="Chanakya Technical Solutions - Environmental Engineering"
-              className="rounded-2xl shadow-xl w-full h-[460px] object-cover border border-gray-100"
+              className="rounded-2xl shadow-xl w-full h-72 sm:h-96 md:h-[460px] object-cover border border-gray-100"
             />
-            <div className="absolute -bottom-6 -left-6 bg-sky-900 text-white p-6 rounded-xl shadow-lg hidden sm:block max-w-xs">
-              <p className="text-2xl font-black text-sky-400 mb-1">100%</p>
-              <p className="text-xs font-medium text-sky-100">Customized Technical & Environmental Engineering Solutions</p>
+            <div className="absolute -bottom-5 -left-2 sm:-bottom-6 sm:-left-6 bg-sky-900 text-white p-4 sm:p-6 rounded-xl shadow-lg max-w-[240px] sm:max-w-xs">
+              <p className="text-xl sm:text-2xl font-black text-sky-400 mb-1">100%</p>
+              <p className="text-[11px] sm:text-xs font-medium text-sky-100">Customized Technical & Environmental Engineering Solutions</p>
             </div>
           </div>
         </div>
