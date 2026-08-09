@@ -643,10 +643,27 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
     }
   };
 
+  // Open testimonial modal and push state so phone back button closes modal
+  const handleOpenTestimonial = (item) => {
+    setSelectedTestimonial(item);
+    window.history.pushState({ modalOpen: true }, "", `#testimonial-${item.id}`);
+  };
+
+  // Close testimonial modal safely
+  const handleCloseTestimonial = () => {
+    if (selectedTestimonial) {
+      setSelectedTestimonial(null);
+      if (window.history.state && window.history.state.modalOpen) {
+        window.history.back();
+      }
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        handleCloseService();
+        if (selectedService) handleCloseService();
+        if (selectedTestimonial) handleCloseTestimonial();
         setMobileMenuOpen(false);
       }
     };
@@ -654,6 +671,9 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
     const handlePopState = () => {
       if (selectedService) {
         setSelectedService(null);
+      }
+      if (selectedTestimonial) {
+        setSelectedTestimonial(null);
       }
     };
 
@@ -664,7 +684,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [selectedService]);
+  }, [selectedService, selectedTestimonial]);
 
   const clientLogos = [
     "/assets/client companies/1.jpeg",
@@ -1386,7 +1406,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             {testimonials.map((item) => (
               <div
                 key={item.id}
-                onClick={() => setSelectedTestimonial(item)}
+                onClick={() => handleOpenTestimonial(item)}
                 className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col justify-between hover:-translate-y-1"
               >
                 <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
@@ -1422,7 +1442,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
       {/* Full-size Testimonial Certificate Lightbox Modal */}
       {selectedTestimonial && (
         <div
-          onClick={() => setSelectedTestimonial(null)}
+          onClick={handleCloseTestimonial}
           className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 p-4 md:p-8 flex items-center justify-center cursor-pointer animate-in fade-in duration-200"
         >
           <div
@@ -1440,7 +1460,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               </div>
 
               <button
-                onClick={() => setSelectedTestimonial(null)}
+                onClick={handleCloseTestimonial}
                 className="bg-white/10 hover:bg-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold transition"
               >
                 ✕
@@ -1458,7 +1478,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             <div className="bg-gray-100 px-6 py-3 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600">
               <span>Chanakya Technical Solutions - Client Testimonials</span>
               <button
-                onClick={() => setSelectedTestimonial(null)}
+                onClick={handleCloseTestimonial}
                 className="bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
               >
                 Close Certificate
