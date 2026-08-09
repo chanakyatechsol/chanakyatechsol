@@ -1097,28 +1097,9 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               The company focuses on providing reliable and efficient technical solutions to address the growing requirements of industries, institutions, municipalities, communities, and residential customers. Its services are aimed at improving water quality, optimizing treatment processes, supporting wastewater reuse, and promoting sustainable waste-management practices.
             </p>
 
-            <p className="text-gray-700 leading-relaxed mb-6 text-justify text-sm sm:text-base">
+            <p className="text-gray-700 leading-relaxed text-justify text-sm sm:text-base">
               With a focus on technical expertise, customer-oriented solutions, innovation, and dedicated service, Chanakya Technical Solutions works toward delivering customized solutions based on the specific requirements of each application. Its multidisciplinary approach enables the company to address a wide range of challenges associated with water purification, wastewater management, waste treatment, resource recovery, and environmental sustainability.
             </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <span className="text-sky-600 font-bold">✓</span>
-                <span className="text-xs font-semibold text-gray-800">Water & Wastewater Treatment</span>
-              </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <span className="text-sky-600 font-bold">✓</span>
-                <span className="text-xs font-semibold text-gray-800">Solid Waste & Resource Recovery</span>
-              </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <span className="text-sky-600 font-bold">✓</span>
-                <span className="text-xs font-semibold text-gray-800">Waste-to-Energy Applications</span>
-              </div>
-              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
-                <span className="text-sky-600 font-bold">✓</span>
-                <span className="text-xs font-semibold text-gray-800">Industrial & Municipal Solutions</span>
-              </div>
-            </div>
           </div>
 
           <div className="relative mt-4 md:mt-0">
@@ -1205,7 +1186,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                     }}
                     className="w-full text-center bg-sky-700 group-hover:bg-sky-800 text-white font-semibold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2"
                   >
-                    <span>View Sub-Services & Details</span>
+                    <span>View Details</span>
                     <span>→</span>
                   </button>
                 </div>
