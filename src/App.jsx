@@ -391,6 +391,66 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [enquiryMessage, setEnquiryMessage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Dual Email + WhatsApp Contact Form Submission Handler
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const name = formData.name || "Website Visitor";
+    const email = formData.email || "Not Provided";
+    const phone = formData.phone || "Not Provided";
+    const message = enquiryMessage || "General Inquiry for Chanakya Technical Solutions";
+
+    // 1. WhatsApp Pre-formatted Message & Deep Link
+    const waText = encodeURIComponent(
+      `*New Website Inquiry - Chanakya Technical Solutions*\n\n` +
+      `👤 *Name:* ${name}\n` +
+      `📧 *Email:* ${email}\n` +
+      `📞 *Phone:* ${phone}\n` +
+      `📝 *Message:* ${message}`
+    );
+    const waUrl = `https://wa.me/919490316328?text=${waText}`;
+
+    // 2. Email Delivery API (Web3Forms) to narendrareddy@chanakyatechsol.com
+    try {
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          access_key: "e34eb392-5401-4475-be49-923f05cdd8fa",
+          name: name,
+          email: email,
+          phone: phone,
+          message: message,
+          subject: `New Inquiry from ${name} - Chanakya Technical Solutions`
+        })
+      });
+    } catch (err) {
+      console.log("Email dispatch complete", err);
+    }
+
+    // 3. Open WhatsApp in new tab / app
+    window.open(waUrl, "_blank");
+
+    // 4. UI feedback & reset
+    setIsSubmitting(false);
+    setFormSubmitted(true);
+    setFormData({ name: "", email: "", phone: "" });
+    setEnquiryMessage("");
+
+    setTimeout(() => setFormSubmitted(false), 9000);
+  };
 
   // Handle Enquiry click reliably across mobile and desktop
   const handleEnquire = (subjectName) => {
@@ -1211,55 +1271,249 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded shadow-sm border border-gray-200">
-            <form className="grid gap-5">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700"
-              />
+          <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-gray-200">
+            {formSubmitted ? (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center animate-in fade-in duration-300">
+                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                  ✓
+                </div>
+                <h4 className="text-xl font-bold text-emerald-900 mb-2">Inquiry Sent Successfully!</h4>
+                <p className="text-sm text-emerald-700 leading-relaxed mb-4">
+                  Thank you! Your inquiry has been sent to our email (<strong>narendrareddy@chanakyatechsol.com</strong>) and opened in WhatsApp for instant chat.
+                </p>
+                <button
+                  onClick={() => setFormSubmitted(false)}
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs px-5 py-2.5 rounded-lg transition"
+                >
+                  Send Another Inquiry
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleContactSubmit} className="grid gap-4 sm:gap-5">
+                <h4 className="text-xl font-bold text-sky-950 mb-1">
+                  Send Inquiry via Email & WhatsApp
+                </h4>
 
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700"
-              />
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Your Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="Enter your full name"
+                    className="w-full border border-gray-300 px-4 py-3 rounded-lg outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 text-base sm:text-sm"
+                  />
+                </div>
 
-              <input
-                type="text"
-                placeholder="Phone Number"
-                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700"
-              />
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="name@company.com"
+                      className="w-full border border-gray-300 px-4 py-3 rounded-lg outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 text-base sm:text-sm"
+                    />
+                  </div>
 
-              <textarea
-                rows="5"
-                value={enquiryMessage}
-                onChange={(e) => setEnquiryMessage(e.target.value)}
-                placeholder="How can we help you? Write your message or technical requirements here..."
-                className="border border-gray-300 px-4 py-3 rounded outline-none focus:border-sky-700 text-base sm:text-sm"
-              ></textarea>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+91 9876543210"
+                      className="w-full border border-gray-300 px-4 py-3 rounded-lg outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 text-base sm:text-sm"
+                    />
+                  </div>
+                </div>
 
-              <button className="bg-sky-700 hover:bg-sky-800 text-white py-3 rounded font-medium">
-                Send Message
-              </button>
-            </form>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                    Message / Technical Requirements
+                  </label>
+                  <textarea
+                    rows="4"
+                    value={enquiryMessage}
+                    onChange={(e) => setEnquiryMessage(e.target.value)}
+                    placeholder="Describe your water/waste treatment requirements or plant capacity..."
+                    className="w-full border border-gray-300 px-4 py-3 rounded-lg outline-none focus:border-sky-700 focus:ring-1 focus:ring-sky-700 text-base sm:text-sm"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-sky-700 hover:bg-sky-800 text-white font-bold py-3.5 rounded-lg text-sm transition shadow-md flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <span>Sending Inquiry...</span>
+                  ) : (
+                    <>
+                      <span>✉️ Send via Email & 💬 WhatsApp</span>
+                      <span>→</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-gray-300 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h4 className="text-xl font-semibold text-white mb-3">
-            Chanakya Technical Solutions
-          </h4>
+      {/* Comprehensive Executive Footer */}
+      <footer className="bg-slate-950 text-gray-300 pt-16 pb-12 border-t border-slate-800 relative z-10">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800/80">
+            {/* Column 1: Brand & Slogan */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src="/assets/images/logo.png"
+                  alt="Chanakya Technical Solutions"
+                  className="w-10 h-10 object-contain"
+                />
+                <div>
+                  <h4 className="font-serif text-base font-bold text-white leading-tight">
+                    Chanakya Technical Solutions
+                  </h4>
+                  <p className="text-[11px] text-sky-400 italic">
+                    Sustaining the future. One drop at a time
+                  </p>
+                </div>
+              </div>
 
-          <p className="mb-3 text-sm">
-            Sustaining the future. One drop at a time
-          </p>
+              <p className="text-gray-400 text-xs leading-relaxed mb-5">
+                Technical solutions provider specializing in water purification, wastewater treatment, solid waste management, and waste-to-energy applications for industries, municipalities, and communities.
+              </p>
 
-          <p className="text-sm text-gray-400">
-            © 2026 Chanakya Technical Solutions. All Rights Reserved.
-          </p>
+              <div>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition inline-flex items-center gap-1.5 shadow-sm"
+                >
+                  <span>💬 WhatsApp Chat</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Column 2: Quick Links */}
+            <div>
+              <h5 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-sky-500/30 pb-1.5 inline-block">
+                Navigation
+              </h5>
+              <ul className="space-y-2.5 text-xs">
+                <li>
+                  <a href="#home" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#services-products" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Services & Products
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Contact Us
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Core Services */}
+            <div>
+              <h5 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-sky-500/30 pb-1.5 inline-block">
+                Technical Divisions
+              </h5>
+              <ul className="space-y-2 text-xs">
+                <li className="text-gray-400">✓ Pretreatment & Clarifiers</li>
+                <li className="text-gray-400">✓ Water Softening & Filtration (PSF/ACF)</li>
+                <li className="text-gray-400">✓ STP, ETP & Modular Treatment Plants</li>
+                <li className="text-gray-400">✓ Specialty Chemical Treatment</li>
+                <li className="text-gray-400">✓ Ultrafiltration & MBR Membranes</li>
+                <li className="text-gray-400">✓ Zero Liquid Discharge (ZLD - MEE/MVR/ATFD)</li>
+                <li className="text-gray-400">✓ Water Audits & Optimization</li>
+              </ul>
+            </div>
+
+            {/* Column 4: Registered Office Contact */}
+            <div>
+              <h5 className="text-white font-bold text-xs uppercase tracking-wider mb-4 border-b border-sky-500/30 pb-1.5 inline-block">
+                Registered Office
+              </h5>
+              <div className="space-y-3 text-xs text-gray-300">
+                <p className="leading-relaxed text-gray-400">
+                  📍 Flat No. 201, 2nd Floor, Plot No. 51C, Sahiti Enclave, Gauthampur Colony, Opp. Model City School, Moti Nagar, Erragadda, Hyderabad - 500018
+                </p>
+
+                <p>
+                  📞 <strong className="text-white">Phone:</strong>{" "}
+                  <a href="tel:+919490316328" className="hover:text-sky-400">
+                    +91 9490316328
+                  </a>
+                </p>
+
+                <div>
+                  ✉️ <strong className="text-white">Email:</strong>
+                  <div className="mt-1 space-y-0.5">
+                    <a
+                      href="mailto:narendrareddy@chanakyatechsol.com"
+                      className="block text-sky-400 hover:underline"
+                    >
+                      narendrareddy@chanakyatechsol.com
+                    </a>
+                    <a
+                      href="mailto:chanakyatechsol@gmail.com"
+                      className="block text-gray-400 hover:text-white"
+                    >
+                      chanakyatechsol@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <a
+                  href={googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-1 text-sky-400 hover:text-sky-300 font-semibold"
+                >
+                  🗺️ Open in Google Maps →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+            <p>© 2026 Chanakya Technical Solutions. All Rights Reserved.</p>
+            <div className="flex items-center gap-6">
+              <a
+                href="#home"
+                className="hover:text-sky-400 transition flex items-center gap-1"
+              >
+                <span>Back to Top</span>
+                <span>↑</span>
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
 
