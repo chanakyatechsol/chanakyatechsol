@@ -391,16 +391,44 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Open sub-services modal and push state so phone back button closes modal
+  const handleOpenService = (service) => {
+    setSelectedService(service);
+    window.history.pushState({ modalOpen: true }, "", `#service-${service.id}`);
+  };
+
+  // Close sub-services modal safely
+  const handleCloseService = () => {
+    if (selectedService) {
+      setSelectedService(null);
+      if (window.history.state && window.history.state.modalOpen) {
+        window.history.back();
+      }
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setSelectedService(null);
+        handleCloseService();
         setMobileMenuOpen(false);
       }
     };
+
+    const handlePopState = () => {
+      if (selectedService) {
+        setSelectedService(null);
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [selectedService]);
 
   const clientLogos = [
     "/assets/client companies/1.jpeg",
@@ -847,7 +875,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             {mainServices.map((item) => (
               <div
                 key={item.id}
-                onClick={() => setSelectedService(item)}
+                onClick={() => handleOpenService(item)}
                 className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 cursor-pointer"
               >
                 <div>
@@ -900,7 +928,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedService(item);
+                      handleOpenService(item);
                     }}
                     className="w-full text-center bg-sky-700 group-hover:bg-sky-800 text-white font-semibold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2"
                   >
@@ -917,7 +945,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
       {/* Interactive Sub-Services Detail Page Modal */}
       {selectedService && (
         <div
-          onClick={() => setSelectedService(null)}
+          onClick={handleCloseService}
           className="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 overflow-y-auto p-4 md:p-8 flex justify-center items-start cursor-pointer"
         >
           <div
@@ -928,7 +956,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             <div className="bg-gradient-to-r from-sky-900 via-sky-800 to-slate-900 text-white p-6 md:p-8 relative">
               <div className="flex items-center justify-between gap-4 mb-4">
                 <button
-                  onClick={() => setSelectedService(null)}
+                  onClick={handleCloseService}
                   className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg border border-white/20 transition"
                 >
                   <span>← Back to All Services</span>
@@ -989,7 +1017,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                       <div className="p-5 pt-0">
                         <a
                           href="#contact"
-                          onClick={() => setSelectedService(null)}
+                          onClick={handleCloseService}
                           className="inline-block w-full text-center bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold py-2.5 rounded-lg text-xs border border-sky-200 transition"
                         >
                           Enquire For {sub.name}
@@ -1013,7 +1041,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                   </p>
                   <a
                     href="#contact"
-                    onClick={() => setSelectedService(null)}
+                    onClick={handleCloseService}
                     className="inline-block bg-sky-700 hover:bg-sky-800 text-white font-semibold px-6 py-3 rounded-lg text-sm transition"
                   >
                     Request Technical Consultation
@@ -1025,7 +1053,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             {/* Modal Footer */}
             <div className="bg-gray-100 px-6 py-4 border-t border-gray-200 flex justify-end">
               <button
-                onClick={() => setSelectedService(null)}
+                onClick={handleCloseService}
                 className="bg-gray-800 hover:bg-gray-900 text-white font-semibold text-xs px-5 py-2.5 rounded-lg transition"
               >
                 Close View
