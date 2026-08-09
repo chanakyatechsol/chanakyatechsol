@@ -1424,21 +1424,29 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                   />
                   <div className="absolute inset-0 bg-sky-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
                     <span className="bg-sky-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md flex items-center gap-1.5">
-                      <span>🔍 Click to View Certificate</span>
+                      <span>🔍 Click to View Letter</span>
                     </span>
                   </div>
                 </div>
 
-                <div className="p-5 border-t border-gray-100">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-1 rounded">
-                    Official Certificate
-                  </span>
-                  <h4 className="text-base font-bold text-gray-900 mt-2 group-hover:text-sky-700 transition">
-                    {item.title}
-                  </h4>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {item.subtitle}
-                  </p>
+                <div className="p-5 border-t border-gray-100 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-sky-800 bg-sky-100/90 border border-sky-200 px-2.5 py-1 rounded-md inline-block">
+                      Letter of Appreciation
+                    </span>
+                    <h4 className="text-base font-extrabold text-gray-900 mt-2.5 group-hover:text-sky-700 transition leading-snug">
+                      {item.title}
+                    </h4>
+                  </div>
+
+                  <div className="mt-3 pt-2.5 border-t border-gray-100">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider text-sky-700 block mb-1">
+                      📋 Project Details & Scope
+                    </span>
+                    <p className="text-xs font-semibold text-sky-950 bg-sky-50/90 border border-sky-200/70 p-2.5 rounded-lg leading-relaxed shadow-2xs">
+                      {item.subtitle}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -1446,52 +1454,28 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         </div>
       </section>
 
-      {/* Full-size Testimonial Certificate Lightbox Modal */}
+      {/* Pure Frameless Testimonial Certificate Lightbox Overlay */}
       {selectedTestimonial && (
         <div
           onClick={handleCloseTestimonial}
-          className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 p-4 md:p-8 flex items-center justify-center cursor-pointer animate-in fade-in duration-200"
+          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 p-4 sm:p-6 flex items-center justify-center cursor-pointer animate-in fade-in duration-200"
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white max-w-4xl w-full rounded-2xl shadow-2xl overflow-hidden border border-gray-200 cursor-default animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
+          {/* Floating Close Button */}
+          <button
+            onClick={handleCloseTestimonial}
+            aria-label="Close View"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 bg-white/20 hover:bg-white/40 text-white w-11 h-11 rounded-full flex items-center justify-center text-xl font-bold shadow-lg transition backdrop-blur-sm"
           >
-            <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
-              <div>
-                <h4 className="font-bold text-base md:text-lg text-white">
-                  {selectedTestimonial.title}
-                </h4>
-                <p className="text-xs text-sky-300">
-                  {selectedTestimonial.subtitle}
-                </p>
-              </div>
+            ✕
+          </button>
 
-              <button
-                onClick={handleCloseTestimonial}
-                className="bg-white/10 hover:bg-white/20 text-white w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold transition"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="p-4 md:p-6 bg-slate-950 overflow-y-auto flex items-center justify-center min-h-[300px]">
-              <img
-                src={selectedTestimonial.image}
-                alt={selectedTestimonial.title}
-                className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg border border-slate-800"
-              />
-            </div>
-
-            <div className="bg-gray-100 px-6 py-3 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600">
-              <span>Chanakya Technical Solutions - Client Testimonials</span>
-              <button
-                onClick={handleCloseTestimonial}
-                className="bg-sky-700 hover:bg-sky-800 text-white font-bold px-4 py-2 rounded-lg text-xs transition"
-              >
-                Close Certificate
-              </button>
-            </div>
-          </div>
+          {/* Pure Image Only - No Frame or Box */}
+          <img
+            src={selectedTestimonial.image}
+            alt={selectedTestimonial.title}
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-[92vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200 cursor-default"
+          />
         </div>
       )}
 
