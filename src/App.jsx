@@ -527,33 +527,38 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   const testimonials = [
     {
       id: 1,
-      title: "Client Appreciation Certificate",
+      company: "Aditya Engineers",
+      title: "Aditya Engineers",
       image: "/assets/images/testimonials/1.jpeg",
-      subtitle: "Water & Environmental Treatment Excellence"
+      subtitle: "20 KLPH Reverse Osmosis (RO) Plant — TOGO Plant, West Africa"
     },
     {
       id: 2,
-      title: "Performance & Quality Recommendation",
+      company: "Covalent Laboratories Pvt. Ltd.",
+      title: "Covalent Laboratories Pvt. Ltd.",
       image: "/assets/images/testimonials/2.jpeg",
-      subtitle: "Wastewater & Effluent Plant Execution"
+      subtitle: "HSRO, DTRO Spares, ACF & Low Fouling RO Membranes — ETP & WTP Operations"
     },
     {
       id: 3,
-      title: "Operational Feedback & Certificate",
+      company: "Saraca Laboratories Limited",
+      title: "Saraca Laboratories Limited",
       image: "/assets/images/testimonials/3.jpeg",
-      subtitle: "Industrial Water Management"
+      subtitle: "70 KLD MBR (Membrane Bio Reactor) System Supply & Commissioning"
     },
     {
       id: 4,
-      title: "Technical Engineering Endorsement",
+      company: "3XPER Innoventure Limited",
+      title: "3XPER Innoventure Limited (Murugappa Group)",
       image: "/assets/images/testimonials/4.jpeg",
-      subtitle: "Zero Liquid Discharge & Reuse"
+      subtitle: "20 KLD Packaged STP & 40 KLD ETP (Pharma Effluent Plant)"
     },
     {
       id: 5,
-      title: "Service Excellence Certificate",
+      company: "3F Industries Ltd.",
+      title: "3F Industries Ltd.",
       image: "/assets/images/testimonials/5.jpeg",
-      subtitle: "Dedicated Support & Client Satisfaction"
+      subtitle: "15 KLPH MGF-UF-RO-MB Water Treatment Export System — Tema, Ghana"
     }
   ];
 
