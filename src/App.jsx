@@ -790,9 +790,9 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
           description: "Customized industrial effluent treatment plants engineered for chemical, textile, pharma, and food processing wastewater."
         },
         {
-          name: "MTP (Modular Treatment Plant)",
+          name: "Containerized Solutions",
           image: "/assets/images/services/wtp.jpeg",
-          description: "Pre-engineered containerized and skid-mounted modular water/wastewater treatment plants for rapid deployment."
+          description: "Pre-engineered containerized and skid-mounted modular water and wastewater treatment systems for rapid field deployment."
         }
       ]
     },
@@ -1043,13 +1043,15 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         <div className="bg-black/55">
           <div className="max-w-7xl mx-auto px-4 py-20 sm:py-28 md:py-36 text-white">
             <div className="max-w-3xl">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 sm:mb-6">
-                Water & Waste Treatment Services
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-4 sm:mb-5">
+                Chanakya Technical Solutions
+                <span className="block text-sky-400 text-2xl sm:text-3xl md:text-4xl mt-1.5 font-bold">
+                  Water & Wastewater Treatment Solutions
+                </span>
               </h2>
 
               <p className="text-base sm:text-lg md:text-xl leading-relaxed text-gray-200 mb-6 sm:mb-8">
-                Professional solutions for water treatment, sewage treatment,
-                effluent management and industrial water systems.
+                Professional technical engineering solutions specializing in WTP, WWTP, ZLD (Zero Liquid Discharge), Speciality Chemicals for Water Treatment, and Containerized Solutions.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
