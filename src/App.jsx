@@ -387,6 +387,130 @@ function HeaderWaterAnimation() {
   );
 }
 
+function InteractiveClientScroller({ clientLogos }) {
+  const scrollRef = useRef(null);
+  const isPausedRef = useRef(false);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let animationFrameId;
+    const speed = 1.0;
+
+    const step = () => {
+      if (scrollContainer && !isPausedRef.current && !isDraggingRef.current) {
+        scrollContainer.scrollLeft += speed;
+        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+          scrollContainer.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  const handleMouseDown = (e) => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+    isDraggingRef.current = true;
+    isPausedRef.current = true;
+    startXRef.current = e.pageX - scrollContainer.offsetLeft;
+    scrollLeftRef.current = scrollContainer.scrollLeft;
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    isDraggingRef.current = false;
+    isPausedRef.current = false;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+    const x = e.pageX - scrollContainer.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    scrollContainer.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const scrollLeftNav = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRightNav = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div className="relative w-full group py-4">
+      {/* Side Fade Gradient Masks */}
+      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+      {/* Manual Scroll Controls for PC */}
+      <button
+        onClick={scrollLeftNav}
+        aria-label="Scroll left"
+        className="absolute left-3 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-sky-700 hover:text-white text-gray-800 w-9 h-9 rounded-full shadow-md border border-gray-200 transition hidden md:flex items-center justify-center font-bold text-lg opacity-80 group-hover:opacity-100"
+      >
+        ‹
+      </button>
+
+      <button
+        onClick={scrollRightNav}
+        aria-label="Scroll right"
+        className="absolute right-3 top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-sky-700 hover:text-white text-gray-800 w-9 h-9 rounded-full shadow-md border border-gray-200 transition hidden md:flex items-center justify-center font-bold text-lg opacity-80 group-hover:opacity-100"
+      >
+        ›
+      </button>
+
+      {/* Scrollable Logos Container */}
+      <div
+        ref={scrollRef}
+        onMouseEnter={() => (isPausedRef.current = true)}
+        onMouseLeave={handleMouseLeaveOrUp}
+        onTouchStart={() => (isPausedRef.current = true)}
+        onTouchEnd={() => {
+          setTimeout(() => {
+            isPausedRef.current = false;
+          }, 1500);
+        }}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseLeaveOrUp}
+        onMouseMove={handleMouseMove}
+        className="flex items-center gap-5 md:gap-7 overflow-x-auto scrollbar-none cursor-grab active:cursor-grabbing select-none px-4 scroll-smooth"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {[...clientLogos, ...clientLogos].map((logoPath, idx) => (
+          <div
+            key={idx}
+            className="flex-shrink-0 w-40 sm:w-48 md:w-52 h-22 sm:h-26 md:h-28 bg-white border border-gray-200/90 rounded-2xl p-3 shadow-xs hover:shadow-md transition-all duration-300 flex items-center justify-center hover:border-sky-400 hover:scale-105"
+          >
+            <img
+              src={logoPath}
+              alt={`Client Partner ${idx + 1}`}
+              className="max-w-full max-h-full object-contain pointer-events-none"
+              onError={(e) => {
+                e.target.style.display = "none";
+              }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ChanakyaTechnicalSolutionsWebsite() {
   const [selectedService, setSelectedService] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -844,7 +968,8 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
       <section
         id="home"
-        className="relative bg-[url('/assets/images/hero-banner.jpg')] bg-cover bg-center"
+        className="relative bg-cover bg-center bg-no-repeat bg-slate-900"
+        style={{ backgroundImage: "url('/assets/images/hero-banner.jpeg')" }}
       >
         <div className="bg-black/55">
           <div className="max-w-7xl mx-auto px-4 py-20 sm:py-28 md:py-36 text-white">
@@ -922,14 +1047,13 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
           <div className="relative mt-4 md:mt-0">
             <img
-              src="/assets/images/about-image.jpg"
+              src="/assets/images/about-image.png"
               alt="Chanakya Technical Solutions - Environmental Engineering"
-              className="rounded-2xl shadow-xl w-full h-72 sm:h-96 md:h-[460px] object-cover border border-gray-100"
+              className="rounded-2xl shadow-xl w-full h-72 sm:h-96 md:h-[460px] object-contain bg-sky-950/5 p-2 border border-gray-100"
+              onError={(e) => {
+                e.target.src = "/assets/images/logo.png";
+              }}
             />
-            <div className="absolute -bottom-5 -left-2 sm:-bottom-6 sm:-left-6 bg-sky-900 text-white p-4 sm:p-6 rounded-xl shadow-lg max-w-[240px] sm:max-w-xs">
-              <p className="text-xl sm:text-2xl font-black text-sky-400 mb-1">100%</p>
-              <p className="text-[11px] sm:text-xs font-medium text-sky-100">Customized Technical & Environmental Engineering Solutions</p>
-            </div>
           </div>
         </div>
       </section>
@@ -1153,30 +1277,8 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
           </p>
         </div>
 
-        {/* Continuous Horizontal Logo Marquee */}
-        <div className="relative w-full overflow-hidden py-4">
-          {/* Side Fade Gradient Masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
-          <div className="animate-marquee flex items-center gap-6 md:gap-8">
-            {[...clientLogos, ...clientLogos].map((logoPath, idx) => (
-              <div
-                key={idx}
-                className="flex-shrink-0 w-44 md:w-52 h-24 md:h-28 bg-white border border-gray-200/90 rounded-2xl p-3 shadow-xs hover:shadow-md transition-all duration-300 flex items-center justify-center group hover:border-sky-300 hover:scale-105"
-              >
-                <img
-                  src={logoPath}
-                  alt={`Client Partner ${idx + 1}`}
-                  className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Continuous & Interactive Horizontal Logo Scroller */}
+        <InteractiveClientScroller clientLogos={clientLogos} />
       </section>
 
       <section className="py-16 md:py-20 bg-sky-700 text-white">
