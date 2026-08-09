@@ -908,8 +908,8 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
     <div className="font-sans text-gray-800 bg-white min-h-screen">
       {/* Executive Header Bar with Background River Journey Animation */}
       <header className="border-b border-sky-200/60 sticky top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm relative overflow-hidden">
-        {/* Background Animation Canvas */}
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
+        {/* Background Animation Canvas (Desktop/Tablet Only) */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-50 hidden md:block">
           <HeaderWaterAnimation />
         </div>
 
