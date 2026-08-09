@@ -1178,20 +1178,15 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
                     </p>
 
                     {item.subServices && item.subServices.length > 0 && (
-                      <div className="mb-5 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                        <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">
-                          Included Sub-Services ({item.subServices.length}):
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {item.subServices.map((sub, idx) => (
-                            <span
-                              key={idx}
-                              className="text-xs font-semibold bg-white text-sky-800 px-2.5 py-1 rounded-md border border-sky-100 shadow-2xs"
-                            >
-                              {sub.name}
-                            </span>
-                          ))}
-                        </div>
+                      <div className="mb-5 flex flex-wrap gap-1.5">
+                        {item.subServices.map((sub, idx) => (
+                          <span
+                            key={idx}
+                            className="text-xs font-semibold bg-sky-50 text-sky-800 px-2.5 py-1 rounded-md border border-sky-100 shadow-2xs"
+                          >
+                            {sub.name}
+                          </span>
+                        ))}
                       </div>
                     )}
                   </div>
