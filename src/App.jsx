@@ -1,67 +1,668 @@
+import { useEffect, useRef, useState } from "react";
+
+function ServiceImagePlaceholder({ src, alt, className }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError || !src) {
+    return (
+      <div className={`bg-gradient-to-br from-sky-900 via-slate-800 to-sky-950 text-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden ${className}`}>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#0ea5e9_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div className="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center mb-3 border border-sky-400/30">
+          <svg className="w-6 h-6 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <span className="text-xs font-bold tracking-wider text-sky-200 uppercase mb-1">{alt}</span>
+        <span className="text-[11px] font-mono text-sky-300/80 bg-black/40 px-2.5 py-0.5 rounded border border-sky-500/20">
+          Image Placeholder: {src}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      onError={() => setHasError(true)}
+    />
+  );
+}
+
+function HeaderWaterAnimation() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+
+    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
+    let height = (canvas.height = canvas.parentElement?.clientHeight || 76);
+
+    const handleResize = () => {
+      if (canvas && canvas.parentElement) {
+        width = canvas.width = canvas.parentElement.clientWidth;
+        height = canvas.height = canvas.parentElement.clientHeight || 76;
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    let step = 0;
+    let boatX = -45;
+    const particles = Array.from({ length: 24 }, () => ({
+      x: Math.random() * (width || 1200),
+      y: height - Math.random() * 20,
+      r: Math.random() * 1.8 + 0.8,
+      speed: Math.random() * 0.4 + 0.2,
+      opacity: Math.random() * 0.6 + 0.3
+    }));
+
+    const render = () => {
+      ctx.clearRect(0, 0, width, height);
+      step += 0.025;
+
+      // 1. Sky & Atmospheric Gradient
+      const skyGrad = ctx.createLinearGradient(0, 0, width, height);
+      skyGrad.addColorStop(0, "#e2e8f0");    // Mountain Dawn Slate
+      skyGrad.addColorStop(0.35, "#ecfdf5"); // Forest Emerald Air
+      skyGrad.addColorStop(0.7, "#f0f9ff");  // City Light Sky
+      skyGrad.addColorStop(1, "#bae6fd");    // Water Horizon
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      const zone1 = width * 0.33;
+      const zone2 = width * 0.67;
+
+      // ==========================================
+      // ZONE 1: REALISTIC MULTI-LAYER MOUNTAINS
+      // ==========================================
+      // Background Distant Ridge
+      ctx.fillStyle = "#94a3b8";
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath();
+      ctx.moveTo(-10, height);
+      ctx.lineTo(zone1 * 0.2, 14);
+      ctx.lineTo(zone1 * 0.45, 38);
+      ctx.lineTo(zone1 * 0.75, 10);
+      ctx.lineTo(zone1 * 1.1, height);
+      ctx.closePath();
+      ctx.fill();
+
+      // Foreground Shaded Mountains with Snow Caps
+      ctx.globalAlpha = 0.85;
+      const drawMountainPeak = (x, y, w, h, baseColor, snowColor) => {
+        // Left Sunny Slope
+        ctx.fillStyle = baseColor;
+        ctx.beginPath();
+        ctx.moveTo(x - w / 2, height);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x, height);
+        ctx.closePath();
+        ctx.fill();
+
+        // Right Shadowed Slope
+        ctx.fillStyle = "#334155";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + w / 2, height);
+        ctx.lineTo(x, height);
+        ctx.closePath();
+        ctx.fill();
+
+        // Snow Cap
+        ctx.fillStyle = snowColor;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - w * 0.14, y + h * 0.24);
+        ctx.lineTo(x - w * 0.05, y + h * 0.18);
+        ctx.lineTo(x + w * 0.08, y + h * 0.26);
+        ctx.lineTo(x + w * 0.14, y + h * 0.22);
+        ctx.closePath();
+        ctx.fill();
+      };
+
+      drawMountainPeak(zone1 * 0.25, 12, zone1 * 0.5, height - 12, "#475569", "#ffffff");
+      drawMountainPeak(zone1 * 0.6, 6, zone1 * 0.55, height - 6, "#64748b", "#f8fafc");
+      drawMountainPeak(zone1 * 0.9, 16, zone1 * 0.45, height - 16, "#475569", "#f1f5f9");
+      ctx.globalAlpha = 1.0;
+
+      // ==========================================
+      // ZONE 2: REALISTIC EVERGREEN FOREST
+      // ==========================================
+      ctx.fillStyle = "#064e3b";
+      ctx.globalAlpha = 0.45;
+      ctx.beginPath();
+      ctx.moveTo(zone1 - 20, height);
+      for (let x = zone1 - 20; x <= zone2 + 20; x += 15) {
+        ctx.lineTo(x, height - 24 - Math.sin(x * 0.05) * 6);
+      }
+      ctx.lineTo(zone2 + 20, height);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+
+      const drawDetailedTree = (x, treeH, scale = 1, leafColor = "#059669") => {
+        // Tree Trunk
+        ctx.fillStyle = "#451a03";
+        ctx.fillRect(x - 1.5 * scale, height - 14, 3 * scale, 14);
+
+        // Tiered Evergreen Canopy
+        ctx.fillStyle = leafColor;
+        const tiers = 4;
+        for (let t = 0; t < tiers; t++) {
+          const tierY = height - 14 - (treeH * (t + 1)) / tiers;
+          const tierW = (16 - t * 3) * scale;
+          ctx.beginPath();
+          ctx.moveTo(x, tierY - 4 * scale);
+          ctx.lineTo(x - tierW / 2, tierY + 5 * scale);
+          ctx.lineTo(x + tierW / 2, tierY + 5 * scale);
+          ctx.closePath();
+          ctx.fill();
+        }
+      };
+
+      const forestW = zone2 - zone1;
+      const treeCount = 14;
+      for (let i = 0; i < treeCount; i++) {
+        const tx = zone1 + (forestW * (i + 0.5)) / treeCount;
+        const h = 24 + (i % 4) * 5;
+        const c = i % 3 === 0 ? "#047857" : i % 3 === 1 ? "#059669" : "#10b981";
+        drawDetailedTree(tx, h, 0.9 + (i % 3) * 0.15, c);
+      }
+
+      // ==========================================
+      // ZONE 3: REALISTIC CITY & INDUSTRIAL PLANT
+      // ==========================================
+      const cityW = width - zone2;
+      const cStart = zone2;
+
+      // Industrial Storage Tank (Silo)
+      ctx.fillStyle = "#0284c7";
+      ctx.beginPath();
+      ctx.ellipse(cStart + cityW * 0.12, height - 32, 16, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      const tankGrad = ctx.createLinearGradient(cStart + cityW * 0.12 - 16, 0, cStart + cityW * 0.12 + 16, 0);
+      tankGrad.addColorStop(0, "#0369a1");
+      tankGrad.addColorStop(0.5, "#38bdf8");
+      tankGrad.addColorStop(1, "#0284c7");
+      ctx.fillStyle = tankGrad;
+      ctx.fillRect(cStart + cityW * 0.12 - 16, height - 32, 32, 24);
+
+      // Industrial Building with Chimneys & Translucent Steam
+      ctx.fillStyle = "#1e293b";
+      ctx.fillRect(cStart + cityW * 0.28, height - 36, 32, 28);
+      ctx.fillStyle = "#fef08a";
+      for (let r = 0; r < 3; r++) {
+        for (let col = 0; col < 3; col++) {
+          ctx.fillRect(cStart + cityW * 0.28 + 5 + col * 8, height - 32 + r * 7, 4, 4);
+        }
+      }
+      ctx.fillStyle = "#475569";
+      ctx.fillRect(cStart + cityW * 0.28 + 24, height - 44, 4, 10);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+      ctx.beginPath();
+      ctx.arc(cStart + cityW * 0.28 + 26, height - 47 - (step * 2) % 10, 4 + (step % 3), 0, Math.PI * 2);
+      ctx.fill();
+
+      // Water Tower with Steel Lattice
+      ctx.strokeStyle = "#0284c7";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cStart + cityW * 0.5, height - 4);
+      ctx.lineTo(cStart + cityW * 0.54, height - 38);
+      ctx.lineTo(cStart + cityW * 0.58, height - 4);
+      ctx.stroke();
+      ctx.fillStyle = "#38bdf8";
+      ctx.beginPath();
+      ctx.ellipse(cStart + cityW * 0.54, height - 38, 14, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Modern Skyscrapers with Window Grids
+      const drawSkyscraper = (x, w, h, color) => {
+        ctx.fillStyle = color;
+        ctx.fillRect(x, height - h, w, h);
+        ctx.fillStyle = "#fbbf24";
+        ctx.globalAlpha = 0.7;
+        for (let wy = height - h + 6; wy < height - 10; wy += 8) {
+          for (let wx = x + 4; wx < x + w - 4; wx += 6) {
+            if ((wx + wy) % 3 !== 0) {
+              ctx.fillRect(wx, wy, 3, 4);
+            }
+          }
+        }
+        ctx.globalAlpha = 1.0;
+      };
+
+      drawSkyscraper(cStart + cityW * 0.65, 24, 42, "#1e3a8a");
+      drawSkyscraper(cStart + cityW * 0.77, 28, 52, "#1d4ed8");
+      drawSkyscraper(cStart + cityW * 0.89, 32, 38, "#0369a1");
+
+      // ==========================================
+      // FLOWING RIVER & REALISTIC FLOATING BOAT
+      // ==========================================
+      // Back Water Layer
+      ctx.beginPath();
+      ctx.moveTo(0, height);
+      for (let x = 0; x <= width; x += 10) {
+        const y = Math.sin(x * 0.012 + step * 0.8) * 4 + height - 20;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(width, height);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(56, 189, 248, 0.4)";
+      ctx.fill();
+
+      // Front Main River Layer
+      ctx.beginPath();
+      ctx.moveTo(0, height);
+      for (let x = 0; x <= width; x += 10) {
+        const y = Math.sin(x * 0.018 + step * 1.2) * 5 + height - 14;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(width, height);
+      ctx.closePath();
+      const riverGrad = ctx.createLinearGradient(0, height - 22, 0, height);
+      riverGrad.addColorStop(0, "#0ea5e9");
+      riverGrad.addColorStop(0.5, "#0284c7");
+      riverGrad.addColorStop(1, "#0369a1");
+      ctx.fillStyle = riverGrad;
+      ctx.fill();
+
+      // Water Surface Reflections
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.45)";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let rx = 20; rx < width; rx += 55) {
+        const ry = Math.sin((rx + step * 40) * 0.02) * 2 + height - 8;
+        ctx.moveTo(rx, ry);
+        ctx.lineTo(rx + 24, ry);
+      }
+      ctx.stroke();
+
+      // Water Bubble Particles
+      particles.forEach((p) => {
+        p.y -= p.speed;
+        if (p.y < height - 20) {
+          p.y = height;
+          p.x = Math.random() * width;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+        ctx.fill();
+      });
+
+      // Floating Boat Physics Motion
+      boatX += 1.2;
+      if (boatX > width + 45) boatX = -45;
+
+      const boatY = Math.sin(boatX * 0.018 + step * 1.2) * 5 + height - 15;
+      const nextY = Math.sin((boatX + 4) * 0.018 + step * 1.2) * 5 + height - 15;
+      const angle = Math.atan2(nextY - boatY, 4);
+
+      // Render Detailed Sailboat
+      ctx.save();
+      ctx.translate(boatX, boatY);
+      ctx.rotate(angle);
+
+      // Boat Wake
+      ctx.beginPath();
+      ctx.moveTo(-14, 3);
+      ctx.lineTo(-32, 7);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Hull
+      ctx.beginPath();
+      ctx.moveTo(-12, 0);
+      ctx.lineTo(-8, 8);
+      ctx.lineTo(10, 8);
+      ctx.lineTo(15, 0);
+      ctx.closePath();
+      ctx.fillStyle = "#0369a1";
+      ctx.fill();
+      ctx.strokeStyle = "#38bdf8";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Mast
+      ctx.beginPath();
+      ctx.moveTo(2, 0);
+      ctx.lineTo(2, -18);
+      ctx.strokeStyle = "#0284c7";
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // Main Sail (White)
+      ctx.beginPath();
+      ctx.moveTo(2, -17);
+      ctx.lineTo(12, -3);
+      ctx.lineTo(2, -3);
+      ctx.closePath();
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.strokeStyle = "#bae6fd";
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+
+      // Jib Sail (Cyan)
+      ctx.beginPath();
+      ctx.moveTo(2, -14);
+      ctx.lineTo(-8, -3);
+      ctx.lineTo(2, -3);
+      ctx.closePath();
+      ctx.fillStyle = "#38bdf8";
+      ctx.fill();
+
+      // Red Flag
+      ctx.beginPath();
+      ctx.moveTo(2, -18);
+      ctx.lineTo(7, -15);
+      ctx.lineTo(2, -12);
+      ctx.closePath();
+      ctx.fillStyle = "#ef4444";
+      ctx.fill();
+
+      ctx.restore();
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <div className="relative w-full h-full overflow-hidden pointer-events-none select-none">
+      <canvas ref={canvasRef} className="block w-full h-full" />
+    </div>
+  );
+}
+
 export default function ChanakyaTechnicalSolutionsWebsite() {
-  const services = [
-    "Water Treatment Plant - Equipments",
-    "Effluent Treatment Plant - Equipments",
-    "Sewage Treatment Plant - Equipments",
-    "Speciality Chemicals",
-    "Water Audit",
-    "Sustainability Solutions",
-    "Rain Water Harvesting",
+  const [selectedService, setSelectedService] = useState(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectedService(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const clientLogos = [
+    "/assets/client companies/1.jpeg",
+    "/assets/client companies/11.jpeg",
+    "/assets/client companies/123.jpeg",
+    "/assets/client companies/2.jpeg",
+    "/assets/client companies/22.jpeg",
+    "/assets/client companies/25.jpeg",
+    "/assets/client companies/3.jpeg",
+    "/assets/client companies/30.jpeg",
+    "/assets/client companies/33.jpeg",
+    "/assets/client companies/4.jpeg",
+    "/assets/client companies/44.jpeg",
+    "/assets/client companies/5.jpeg",
+    "/assets/client companies/55.jpeg",
+    "/assets/client companies/6.jpeg",
+    "/assets/client companies/7.jpeg",
+    "/assets/client companies/77.jpeg",
+    "/assets/client companies/8.jpeg",
+    "/assets/client companies/88.jpeg",
+    "/assets/client companies/9.jpeg",
+    "/assets/client companies/99.jpeg",
+    "/assets/client companies/WhatsApp Image 2026-08-09 at 2.18.51 PM.jpeg"
   ];
 
-  const products = [
-    "Industrial RO Systems",
-    "Water Softening Systems",
-    "Pressure Sand Filters",
-    "Activated Carbon Filters",
-    "DM Plants",
-    "Sewage Treatment Systems",
+  const mainServices = [
+    {
+      id: "1",
+      num: "01",
+      title: "Pretreatment systems",
+      category: "Clarification & Separation",
+      image: "/assets/images/services/clarifier.jpeg",
+      description: "High-efficiency primary physical-chemical clarification and screening systems engineered to eliminate suspended solids, heavy fats, oils, and grease before main treatment stages.",
+      subServices: [
+        {
+          name: "Clarifier",
+          image: "/assets/images/services/clarifier.jpeg",
+          description: "High-rate gravity settling tanks and lamella clarifiers for primary TSS separation and sludge thickening."
+        },
+        {
+          name: "DAF (Dissolved Air Flotation)",
+          image: "/assets/images/services/daf.jpeg",
+          description: "Micro-bubble flotation systems for high-efficiency removal of fine suspended solids, emulsified oil, and grease."
+        },
+        {
+          name: "O&G traps (Oil & Grease traps)",
+          image: "/assets/images/services/daf.jpeg",
+          description: "Industrial and commercial grease interceptors and oil-water separators for free oil and scum removal."
+        },
+        {
+          name: "Screening systems",
+          image: "/assets/images/services/screening.jpeg",
+          description: "Automated coarse and fine bar screens, rotary drum screens, and trash collectors for debris removal."
+        }
+      ]
+    },
+    {
+      id: "2",
+      num: "02",
+      title: "Water softening and filtration",
+      category: "Filtration & Softening",
+      image: "/assets/images/services/softening and filtration.jpeg",
+      description: "Commercial and industrial ion-exchange water softeners, Pressure Sand Filters (PSF), and Activated Carbon Filters (ACF) for total hardness, turbidity, and organic removal.",
+      subServices: [
+        {
+          name: "Water Softening Systems",
+          image: "/assets/images/services/softening and filtration.jpeg",
+          description: "Ion-exchange resin softeners for total hardness reduction and boiler/cooling tower scale prevention."
+        },
+        {
+          name: "Pressure Sand Filters (PSF)",
+          image: "/assets/images/services/softening and filtration.jpeg",
+          description: "Multi-grade sand bed filters for turbidity, suspended solids, and sediment filtration."
+        },
+        {
+          name: "Activated Carbon Filters (ACF)",
+          image: "/assets/images/services/softening and filtration.jpeg",
+          description: "High-iodine activated carbon beds for free chlorine, odor, color, and organic compound absorption."
+        }
+      ]
+    },
+    {
+      id: "3",
+      num: "03",
+      title: "Water treatment plants",
+      category: "Wastewater & Effluent",
+      image: "/assets/images/services/wtp.jpeg",
+      description: "Complete turnkey treatment plants customized for municipal, industrial, commercial, and institutional applications.",
+      subServices: [
+        {
+          name: "STP (Sewage Treatment Plant)",
+          image: "/assets/images/services/stp.jpeg",
+          description: "Biological sewage treatment systems using SBR, MBBR, MBR, and extended aeration processes for clean effluent discharge and reuse."
+        },
+        {
+          name: "ETP (Effluent Treatment Plant)",
+          image: "/assets/images/services/etp.jpeg",
+          description: "Customized industrial effluent treatment plants engineered for chemical, textile, pharma, and food processing wastewater."
+        },
+        {
+          name: "MTP (Modular Treatment Plant)",
+          image: "/assets/images/services/wtp.jpeg",
+          description: "Pre-engineered containerized and skid-mounted modular water/wastewater treatment plants for rapid deployment."
+        }
+      ]
+    },
+    {
+      id: "4",
+      num: "04",
+      title: "Chemical treatment",
+      category: "Specialty Chemicals",
+      image: "/assets/images/services/chemical-treatment.jpeg",
+      description: "Formulated industrial chemical solutions to prevent scaling, bio-fouling, corrosion, and organic buildup across RO systems, boilers, cooling towers, and ETPs.",
+      subServices: [
+        {
+          name: "Antiscalant",
+          image: "/assets/images/services/antiscalant.jpeg",
+          description: "High-efficiency RO membrane antiscalants for silica, calcium sulfate, and carbonate scale prevention."
+        },
+        {
+          name: "Cleaning chemicals",
+          image: "/assets/images/services/cleaning-chemicals.jpeg",
+          description: "Acidic and alkaline CIP cleaning chemicals for RO, UF, and MBR membrane rejuvenation."
+        },
+        {
+          name: "Descaling chemicals",
+          image: "/assets/images/services/descaling-chemicals.jpeg",
+          description: "Heavy-duty descalers for heat exchangers, boilers, cooling towers, and pipe scale removal."
+        },
+        {
+          name: "Deoiling polymer",
+          image: "/assets/images/services/deoiling-polymer.jpeg",
+          description: "Specialized de-oiling polyelectrolytes and coagulant aids for rapid oil-water phase separation."
+        },
+        {
+          name: "Defoamer",
+          image: "/assets/images/services/defoamer.jpeg",
+          description: "Silicone and non-silicone food/industrial grade anti-foaming agents for aeration tanks and ETP units."
+        }
+      ]
+    },
+    {
+      id: "5",
+      num: "05",
+      title: "Membrane filtration",
+      category: "Advanced Separation",
+      image: "/assets/images/services/uf.jpeg",
+      description: "State-of-the-art physical membrane barrier separation technologies for ultra-clean permeate, bacterial removal, and high-purity water recycling.",
+      subServices: [
+        {
+          name: "UF (Ultrafiltration)",
+          image: "/assets/images/services/uf.jpeg",
+          description: "Hollow fiber ultrafiltration systems providing 0.02-micron physical separation for SDI reduction and RO pretreatment."
+        },
+        {
+          name: "MBR (Membrane Bioreactor)",
+          image: "/assets/images/services/mbr.jpeg",
+          description: "Submerged and external MBR systems combining biological oxidation with membrane filtration for ultra-pure effluent."
+        }
+      ]
+    },
+    {
+      id: "6",
+      num: "06",
+      title: "ZLD (Zero Liquid Discharge)",
+      category: "Zero Discharge & Recycling",
+      image: "/assets/images/services/zld.jpeg",
+      description: "Turnkey ZLD plants engineered for 100% liquid waste recovery and total salt crystallization based on MEE, MVR, and ATFD thermal technologies.",
+      subServices: [
+        {
+          name: "MEE (Multiple Effect Evaporator)",
+          image: "/assets/images/services/zld.jpeg",
+          description: "Steam-driven multi-stage evaporators for concentrating high TDS wastewater reject streams."
+        },
+        {
+          name: "MVR (Mechanical Vapor Recompression)",
+          image: "/assets/images/services/zld.jpeg",
+          description: "Energy-efficient vapor recompression evaporators minimizing thermal energy consumption."
+        },
+        {
+          name: "ATFD (Agitated Thin Film Dryer)",
+          image: "/assets/images/services/zld.jpeg",
+          description: "Thermal dryers for converting concentrated slurry into dry salt crystals for zero liquid discharge."
+        }
+      ]
+    },
+    {
+      id: "7",
+      num: "07",
+      title: "Water audit",
+      category: "Technical Auditing & Optimization",
+      image: "/assets/images/services/water-audit.jpeg",
+      description: "Comprehensive industrial, institutional, and commercial water audits, flow balancing, leak detection, and sustainability optimization.",
+      subServices: [
+        {
+          name: "Industrial Water Balance & Flow Audit",
+          image: "/assets/images/services/water-audit.jpeg",
+          description: "Detailed mapping of plant intake, process consumption, cooling tower losses, and discharge streams."
+        },
+        {
+          name: "Process Optimization & Conservation Report",
+          image: "/assets/images/services/water-audit.jpeg",
+          description: "Actionable engineering recommendations for reducing specific water consumption and maximizing recycling."
+        }
+      ]
+    }
   ];
 
   const googleMapsUrl =
     "https://www.google.com/maps/search/?api=1&query=Flat%20No.%20201%2C%202nd%20Floor%2C%20Plot%20No.%2051C%2C%20Sahiti%20Enclave%2C%20Gauthampur%20Colony%2C%20Opp.%20Model%20City%20School%2C%20Moti%20Nagar%2C%20Erragadda%2C%20Hyderabad%20500018";
 
   const whatsappUrl =
-    "https://wa.me/918187824283?text=Hello%20Chanakya%20Technical%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20water%20and%20waste%20treatment%20services.";
+    "https://wa.me/919490316328?text=Hello%20Chanakya%20Technical%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20water%20and%20waste%20treatment%20services.";
 
   return (
     <div className="font-sans text-gray-800 bg-white">
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      {/* Executive Header Bar with Background River Journey Animation */}
+      <header className="border-b border-sky-200/60 sticky top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm relative overflow-hidden">
+        {/* Background Animation Canvas */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
+          <HeaderWaterAnimation />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-3 md:py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3.5">
             <img
               src="/assets/images/logo.png"
               alt="Chanakya Technical Solutions"
-              className="w-14 h-14 object-contain"
+              className="w-12 h-12 md:w-14 md:h-14 object-contain transition-transform duration-300 hover:scale-105"
             />
 
             <div>
-              <h1 className="text-xl font-bold text-sky-700 leading-tight">
+              <h1 className="font-serif text-lg md:text-xl font-bold text-sky-950 leading-tight tracking-tight">
                 Chanakya Technical Solutions
               </h1>
-              <p className="text-sm text-gray-600 italic">
+              <p className="text-xs text-gray-700 italic font-sans font-medium">
                 Sustaining the future. One drop at a time
               </p>
             </div>
           </div>
 
-          <nav className="hidden md:flex gap-8 text-[15px] font-medium">
-            <a href="#home" className="hover:text-sky-700">
-              Home
+          <div className="flex items-center gap-8">
+            <nav className="hidden md:flex gap-7 text-[14px] font-bold text-gray-800">
+              <a href="#home" className="hover:text-sky-700 transition">
+                Home
+              </a>
+              <a href="#about" className="hover:text-sky-700 transition">
+                About
+              </a>
+              <a href="#services-products" className="hover:text-sky-700 transition">
+                Services & Products
+              </a>
+              <a href="#contact" className="hover:text-sky-700 transition">
+                Contact
+              </a>
+            </nav>
+
+            <a
+              href="#contact"
+              className="hidden sm:inline-block bg-sky-700 hover:bg-sky-800 text-white text-xs font-semibold px-4 py-2.5 rounded-md shadow-md transition"
+            >
+              Contact Us
             </a>
-            <a href="#about" className="hover:text-sky-700">
-              About
-            </a>
-            <a href="#services" className="hover:text-sky-700">
-              Services
-            </a>
-            <a href="#products" className="hover:text-sky-700">
-              Products
-            </a>
-            <a href="#contact" className="hover:text-sky-700">
-              Contact
-            </a>
-          </nav>
+          </div>
         </div>
       </header>
 
@@ -83,10 +684,10 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="#services"
+                  href="#services-products"
                   className="bg-sky-700 hover:bg-sky-800 px-7 py-3 rounded text-white font-medium"
                 >
-                  Our Services
+                  Services & Products
                 </a>
 
                 <a
@@ -101,109 +702,303 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         </div>
       </section>
 
-      <section id="about" className="py-16 md:py-20 bg-white">
+      <section id="about" className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h3 className="text-3xl font-bold text-sky-700 mb-6">About Us</h3>
+            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 mb-3">
+              About The Company
+            </span>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-sky-900 mb-6">
+              Chanakya Technical Solutions
+            </h3>
 
-            <p className="text-gray-700 leading-8 mb-5 text-justify">
-              Chanakya Technical Solutions provides reliable and professional
-              water and waste treatment services for industrial and commercial
-              applications. We focus on quality equipment, efficient treatment
-              systems and sustainable environmental solutions.
+            <p className="text-gray-700 leading-relaxed mb-4 text-justify">
+              Chanakya Technical Solutions is a technical solutions provider specializing in water and environmental management, offering solutions for water treatment, wastewater treatment, solid waste management, and waste-to-energy applications.
             </p>
 
-            <p className="text-gray-700 leading-8 text-justify">
-              Our services include water treatment plants, effluent treatment
-              systems, sewage treatment systems, speciality chemicals, water
-              audits and sustainability solutions tailored to customer
-              requirements.
+            <p className="text-gray-700 leading-relaxed mb-4 text-justify">
+              The company focuses on providing reliable and efficient technical solutions to address the growing requirements of industries, institutions, municipalities, communities, and residential customers. Its services are aimed at improving water quality, optimizing treatment processes, supporting wastewater reuse, and promoting sustainable waste-management practices.
             </p>
+
+            <p className="text-gray-700 leading-relaxed mb-6 text-justify">
+              With a focus on technical expertise, customer-oriented solutions, innovation, and dedicated service, Chanakya Technical Solutions works toward delivering customized solutions based on the specific requirements of each application. Its multidisciplinary approach enables the company to address a wide range of challenges associated with water purification, wastewater management, waste treatment, resource recovery, and environmental sustainability.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-3 pt-2">
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <span className="text-sky-600 font-bold">✓</span>
+                <span className="text-xs font-semibold text-gray-800">Water & Wastewater Treatment</span>
+              </div>
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <span className="text-sky-600 font-bold">✓</span>
+                <span className="text-xs font-semibold text-gray-800">Solid Waste & Resource Recovery</span>
+              </div>
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <span className="text-sky-600 font-bold">✓</span>
+                <span className="text-xs font-semibold text-gray-800">Waste-to-Energy Applications</span>
+              </div>
+              <div className="flex items-center gap-2.5 p-3 rounded-lg bg-sky-50 border border-sky-100">
+                <span className="text-sky-600 font-bold">✓</span>
+                <span className="text-xs font-semibold text-gray-800">Industrial & Municipal Solutions</span>
+              </div>
+            </div>
           </div>
 
-          <div>
+          <div className="relative">
             <img
               src="/assets/images/about-image.jpg"
-              alt="Water Treatment"
-              className="rounded shadow-lg w-full h-full object-cover"
+              alt="Chanakya Technical Solutions - Environmental Engineering"
+              className="rounded-2xl shadow-xl w-full h-[460px] object-cover border border-gray-100"
             />
+            <div className="absolute -bottom-6 -left-6 bg-sky-900 text-white p-6 rounded-xl shadow-lg hidden sm:block max-w-xs">
+              <p className="text-2xl font-black text-sky-400 mb-1">100%</p>
+              <p className="text-xs font-medium text-sky-100">Customized Technical & Environmental Engineering Solutions</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="services" className="py-16 md:py-20 bg-gray-50">
+      {/* Services & Products Section */}
+      <section id="services-products" className="py-16 md:py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <h3 className="text-3xl font-bold text-sky-700 mb-4">
-              Our Services
+          <div className="text-center mb-16">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 mb-3">
+              Technical Offerings & Solutions
+            </span>
+            <h3 className="text-3xl md:text-4xl font-extrabold text-sky-900 mb-4">
+              Services & Specialized Systems
             </h3>
-
-            <p className="text-gray-600 max-w-3xl mx-auto leading-7">
-              Complete water and waste treatment solutions for industrial,
-              commercial and environmental applications.
+            <p className="text-gray-600 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+              Explore our core technical divisions below. Click on any main service to view detailed sub-services, system specifications, and equipment image placeholders.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
+            {mainServices.map((item) => (
               <div
-                key={service}
-                className="bg-white border border-gray-200 p-6 rounded shadow-sm hover:shadow-md transition"
+                key={item.id}
+                onClick={() => setSelectedService(item)}
+                className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 cursor-pointer"
               >
-                <h4 className="text-lg font-semibold leading-7 mb-3">
-                  {service}
-                </h4>
+                <div>
+                  {/* Service Image Placeholder */}
+                  <ServiceImagePlaceholder
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-44 object-cover"
+                  />
 
-                <p className="text-gray-600 text-sm leading-7 mb-5">
-                  Professional and reliable solutions designed for industrial,
-                  commercial and environmental water treatment requirements.
-                </p>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-bold px-3 py-1 bg-sky-50 text-sky-700 rounded-full border border-sky-100">
+                        {item.category}
+                      </span>
+                      <span className="text-2xl font-black text-sky-200 group-hover:text-sky-600 transition-colors">
+                        {item.num}
+                      </span>
+                    </div>
 
-                <a
-                  href="#contact"
-                  className="inline-block bg-sky-700 hover:bg-sky-800 text-white px-5 py-2 rounded text-sm"
-                >
-                  Enquiry Now
-                </a>
+                    <h4 className="text-xl font-bold text-gray-900 leading-snug mb-3 group-hover:text-sky-700 transition-colors">
+                      {item.title}
+                    </h4>
+
+                    <p className="text-gray-600 text-sm leading-relaxed mb-5">
+                      {item.description}
+                    </p>
+
+                    {item.subServices && item.subServices.length > 0 && (
+                      <div className="mb-5 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">
+                          Included Sub-Services ({item.subServices.length}):
+                        </p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {item.subServices.map((sub, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs font-semibold bg-white text-sky-800 px-2.5 py-1 rounded-md border border-sky-100 shadow-2xs"
+                            >
+                              {sub.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-6 pb-6">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedService(item);
+                    }}
+                    className="w-full text-center bg-sky-700 group-hover:bg-sky-800 text-white font-semibold py-3 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2"
+                  >
+                    <span>View Sub-Services & Details</span>
+                    <span>→</span>
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="products" className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-14">
-            <h3 className="text-3xl font-bold text-sky-700 mb-4">
-              Products & Equipments
-            </h3>
+      {/* Interactive Sub-Services Detail Page Modal */}
+      {selectedService && (
+        <div
+          onClick={() => setSelectedService(null)}
+          className="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 overflow-y-auto p-4 md:p-8 flex justify-center items-start cursor-pointer"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white max-w-5xl w-full rounded-2xl shadow-2xl border border-gray-200 overflow-hidden my-6 animate-in fade-in zoom-in-95 duration-200 cursor-default"
+          >
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-sky-900 via-sky-800 to-slate-900 text-white p-6 md:p-8 relative">
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <button
+                  onClick={() => setSelectedService(null)}
+                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg border border-white/20 transition"
+                >
+                  <span>← Back to All Services</span>
+                </button>
 
-            <p className="text-gray-600 max-w-3xl mx-auto leading-7">
-              We supply high-quality industrial equipment and treatment systems
-              designed for efficient performance and long-term reliability.
-            </p>
+                <span className="text-3xl font-black text-sky-400 opacity-60">
+                  {selectedService.num}
+                </span>
+              </div>
+
+              <span className="inline-block text-xs font-bold text-sky-300 uppercase tracking-widest bg-sky-950/60 px-3 py-1 rounded border border-sky-500/30 mb-2">
+                {selectedService.category}
+              </span>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-3">
+                {selectedService.title}
+              </h3>
+              <p className="text-sky-100 text-sm md:text-base leading-relaxed max-w-3xl">
+                {selectedService.description}
+              </p>
+            </div>
+
+            {/* Modal Content - Sub-Services Grid */}
+            <div className="p-6 md:p-8 bg-slate-50">
+              <div className="flex items-center justify-between mb-6">
+                <h4 className="text-xl font-bold text-gray-900">
+                  Specialized Sub-Services & System Units
+                </h4>
+                <span className="text-xs font-semibold text-gray-500">
+                  Image placeholders ready for folder upload
+                </span>
+              </div>
+
+              {selectedService.subServices && selectedService.subServices.length > 0 ? (
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {selectedService.subServices.map((sub, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between"
+                    >
+                      <div>
+                        {/* Sub-Service Image Placeholder */}
+                        <ServiceImagePlaceholder
+                          src={sub.image}
+                          alt={sub.name}
+                          className="w-full h-48 object-cover"
+                        />
+
+                        <div className="p-5">
+                          <h5 className="text-lg font-bold text-sky-900 mb-2">
+                            {sub.name}
+                          </h5>
+                          <p className="text-gray-600 text-sm leading-relaxed">
+                            {sub.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-5 pt-0">
+                        <a
+                          href="#contact"
+                          onClick={() => setSelectedService(null)}
+                          className="inline-block w-full text-center bg-sky-50 hover:bg-sky-100 text-sky-800 font-bold py-2.5 rounded-lg text-xs border border-sky-200 transition"
+                        >
+                          Enquire For {sub.name}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white p-8 rounded-xl border border-gray-200 text-center">
+                  <ServiceImagePlaceholder
+                    src={selectedService.image}
+                    alt={selectedService.title}
+                    className="w-full h-64 object-cover rounded-lg mb-6"
+                  />
+                  <h5 className="text-xl font-bold text-sky-900 mb-3">
+                    {selectedService.title} Solutions
+                  </h5>
+                  <p className="text-gray-600 max-w-2xl mx-auto text-sm leading-relaxed mb-6">
+                    {selectedService.description}
+                  </p>
+                  <a
+                    href="#contact"
+                    onClick={() => setSelectedService(null)}
+                    className="inline-block bg-sky-700 hover:bg-sky-800 text-white font-semibold px-6 py-3 rounded-lg text-sm transition"
+                  >
+                    Request Technical Consultation
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-gray-100 px-6 py-4 border-t border-gray-200 flex justify-end">
+              <button
+                onClick={() => setSelectedService(null)}
+                className="bg-gray-800 hover:bg-gray-900 text-white font-semibold text-xs px-5 py-2.5 rounded-lg transition"
+              >
+                Close View
+              </button>
+            </div>
           </div>
+        </div>
+      )}
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
+      {/* Client Companies Infinite Marquee Scroller */}
+      <section className="py-14 md:py-20 bg-white border-y border-gray-200/80 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 text-center mb-10">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 mb-3">
+            Proven Track Record
+          </span>
+          <h3 className="text-2xl md:text-3xl font-extrabold text-sky-950">
+            Companies & Clients We Have Worked With
+          </h3>
+          <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto mt-2">
+            Trusted by leading industrial, commercial, and municipal clients across water and waste treatment engineering.
+          </p>
+        </div>
+
+        {/* Continuous Horizontal Logo Marquee */}
+        <div className="relative w-full overflow-hidden py-4">
+          {/* Side Fade Gradient Masks */}
+          <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+          <div className="animate-marquee flex items-center gap-6 md:gap-8">
+            {[...clientLogos, ...clientLogos].map((logoPath, idx) => (
               <div
-                key={product}
-                className="border border-gray-200 rounded overflow-hidden bg-white shadow-sm"
+                key={idx}
+                className="flex-shrink-0 w-44 md:w-52 h-24 md:h-28 bg-white border border-gray-200/90 rounded-2xl p-3 shadow-xs hover:shadow-md transition-all duration-300 flex items-center justify-center group hover:border-sky-300 hover:scale-105"
               >
                 <img
-                  src="/assets/images/product-placeholder.jpg"
-                  alt={product}
-                  className="w-full h-56 object-cover"
+                  src={logoPath}
+                  alt={`Client Partner ${idx + 1}`}
+                  className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
                 />
-
-                <div className="p-5">
-                  <h4 className="text-lg font-semibold mb-3">{product}</h4>
-
-                  <p className="text-gray-600 leading-7 text-sm">
-                    High-performance industrial treatment equipment suitable for
-                    commercial and industrial applications.
-                  </p>
-                </div>
               </div>
             ))}
           </div>
@@ -288,7 +1083,16 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
               <div>
                 <h4 className="font-semibold text-lg mb-1">Email</h4>
-                <p>chanakyatechsol@gmail.com</p>
+                <p>
+                  <a href="mailto:narendrareddy@chanakyatechsol.com" className="hover:text-sky-700 font-medium">
+                    narendrareddy@chanakyatechsol.com
+                  </a>
+                </p>
+                <p className="text-sm text-gray-500">
+                  <a href="mailto:chanakyatechsol@gmail.com" className="hover:text-sky-700">
+                    chanakyatechsol@gmail.com
+                  </a>
+                </p>
               </div>
             </div>
           </div>
