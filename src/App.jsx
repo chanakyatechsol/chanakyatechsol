@@ -559,6 +559,13 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
       title: "3F Industries Ltd.",
       image: "/assets/images/testimonials/5.jpeg",
       subtitle: "15 KLPH MGF-UF-RO-MB Water Treatment Export System — Tema, Ghana"
+    },
+    {
+      id: 6,
+      company: "AGI Greenpac Limited",
+      title: "AGI Greenpac Limited (AGI glaspac)",
+      image: "/assets/images/testimonials/6.jpeg",
+      subtitle: "400 KLD Wastewater Treatment Plant (2-Stage Reject RO) & 25 KLPH Ultrafiltration System"
     }
   ];
 
@@ -1090,15 +1097,15 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
             </h3>
 
             <p className="text-gray-700 leading-relaxed mb-4 text-justify text-sm sm:text-base">
-              Chanakya Technical Solutions is a technical solutions provider specializing in water and environmental management, offering solutions for water treatment, wastewater treatment, solid waste management, and waste-to-energy applications.
+              Chanakya Technical Solutions is a technical solutions provider specializing in water and environmental management, offering turnkey solutions for water treatment and wastewater treatment.
             </p>
 
             <p className="text-gray-700 leading-relaxed mb-4 text-justify text-sm sm:text-base">
-              The company focuses on providing reliable and efficient technical solutions to address the growing requirements of industries, institutions, municipalities, communities, and residential customers. Its services are aimed at improving water quality, optimizing treatment processes, supporting wastewater reuse, and promoting sustainable waste-management practices.
+              The company focuses on providing reliable and efficient technical solutions to address the growing requirements of industries, institutions, municipalities, communities, and residential customers. Its services are aimed at improving water quality, optimizing treatment processes, supporting wastewater reuse, and promoting sustainable water management practices.
             </p>
 
             <p className="text-gray-700 leading-relaxed text-justify text-sm sm:text-base">
-              With a focus on technical expertise, customer-oriented solutions, innovation, and dedicated service, Chanakya Technical Solutions works toward delivering customized solutions based on the specific requirements of each application. Its multidisciplinary approach enables the company to address a wide range of challenges associated with water purification, wastewater management, waste treatment, resource recovery, and environmental sustainability.
+              With a focus on technical expertise, customer-oriented solutions, innovation, and dedicated service, Chanakya Technical Solutions works toward delivering customized solutions based on the specific requirements of each application. Its multidisciplinary approach enables the company to address a wide range of challenges associated with water purification, wastewater management, and environmental sustainability.
             </p>
           </div>
 
@@ -1633,7 +1640,7 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               </div>
 
               <p className="text-gray-400 text-xs leading-relaxed mb-5">
-                Technical solutions provider specializing in water purification, wastewater treatment, solid waste management, and waste-to-energy applications for industries, municipalities, and communities.
+                Technical solutions provider specializing in water purification and wastewater treatment for industries, municipalities, and communities.
               </p>
 
               <div>
