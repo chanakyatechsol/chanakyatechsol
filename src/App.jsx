@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function ServiceImagePlaceholder({ src, alt, className }) {
   const [hasError, setHasError] = useState(false);
@@ -512,6 +513,9 @@ function InteractiveClientScroller({ clientLogos }) {
 }
 
 export default function ChanakyaTechnicalSolutionsWebsite() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [selectedService, setSelectedService] = useState(null);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -523,6 +527,61 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const path = location.pathname;
+    let title = "Chanakya Technical Solutions | Water & Wastewater Treatment Plants";
+    let description = "Chanakya Technical Solutions offers turnkey Water Treatment Plants (WTP), Sewage Treatment Plants (STP), Effluent Treatment Plants (ETP), Reverse Osmosis (RO) Plants, and Pretreatment systems in India and internationally.";
+
+    if (path === "/about") {
+      title = "About Us | Chanakya Technical Solutions";
+      description = "Learn about Chanakya Technical Solutions - specialized engineering firm providing turnkey water and wastewater treatment, environmental engineering, and technical audits.";
+    } else if (path === "/services" || path === "/services-products") {
+      title = "Water & Wastewater Treatment Services | Chanakya Technical Solutions";
+      description = "Specialized technical services including WTP, STP, ETP, RO Plants, ZLD, Ultrafiltration, MBR, and Specialty Chemical treatment.";
+    } else if (path === "/products") {
+      title = "Turnkey Products & Systems | Chanakya Technical Solutions";
+      description = "Turnkey product lineup: Containerized Water Treatment Plants, High Recovery RO Systems, Clarifiers, DAF units, and Descaling Chemicals.";
+    } else if (path === "/testimonials") {
+      title = "Client Appreciation Letters & Testimonials | Chanakya Technical Solutions";
+      description = "Client appreciation letters and project completion certificates from leading pharmaceutical, industrial, and international clients.";
+    } else if (path === "/contact") {
+      title = "Contact Us | Chanakya Technical Solutions";
+      description = "Contact Chanakya Technical Solutions in Hyderabad for direct technical consultation, water audits, turn-key project execution, and support.";
+    }
+
+    document.title = title;
+
+    const metaDesc = document.querySelector("meta[name='description']");
+    if (metaDesc) {
+      metaDesc.setAttribute("content", description);
+    }
+
+    const canonical = document.querySelector("link[rel='canonical']");
+    if (canonical) {
+      canonical.setAttribute("href", `https://www.chanakyatechsol.com${path === "/" ? "" : path}`);
+    }
+
+    if (path === "/about") {
+      const el = document.getElementById("about");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else window.scrollTo(0, 0);
+    } else if (path === "/services" || path === "/products" || path === "/services-products") {
+      const el = document.getElementById("services-products");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else window.scrollTo(0, 0);
+    } else if (path === "/testimonials") {
+      const el = document.getElementById("testimonials");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else window.scrollTo(0, 0);
+    } else if (path === "/contact") {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else window.scrollTo(0, 0);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   const testimonials = [
     {
@@ -945,29 +1004,32 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
           <div className="flex items-center gap-4 md:gap-8">
             <nav className="hidden md:flex gap-7 text-[14px] font-bold text-gray-800">
-              <a href="#home" className="hover:text-sky-700 transition">
+              <Link to="/" className="hover:text-sky-700 transition">
                 Home
-              </a>
-              <a href="#about" className="hover:text-sky-700 transition">
+              </Link>
+              <Link to="/about" className="hover:text-sky-700 transition">
                 About
-              </a>
-              <a href="#services-products" className="hover:text-sky-700 transition">
-                Services & Products
-              </a>
-              <a href="#testimonials" className="hover:text-sky-700 transition">
+              </Link>
+              <Link to="/services" className="hover:text-sky-700 transition">
+                Services
+              </Link>
+              <Link to="/products" className="hover:text-sky-700 transition">
+                Products
+              </Link>
+              <Link to="/testimonials" className="hover:text-sky-700 transition">
                 Testimonials
-              </a>
-              <a href="#contact" className="hover:text-sky-700 transition">
+              </Link>
+              <Link to="/contact" className="hover:text-sky-700 transition">
                 Contact
-              </a>
+              </Link>
             </nav>
 
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="hidden sm:inline-block bg-sky-700 hover:bg-sky-800 text-white text-xs font-semibold px-4 py-2.5 rounded-md shadow-md transition"
             >
               Contact Us
-            </a>
+            </Link>
 
             {/* Mobile Menu Hamburger Toggle Button */}
             <button
@@ -992,41 +1054,48 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
         {mobileMenuOpen && (
           <div className="relative z-20 md:hidden bg-white/95 backdrop-blur-lg border-t border-sky-100 px-5 py-4 shadow-lg animate-in slide-in-from-top-2 duration-200">
             <nav className="flex flex-col gap-2.5 text-base font-bold text-gray-800">
-              <a
-                href="#home"
+              <Link
+                to="/"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
                 Home
-              </a>
-              <a
-                href="#about"
+              </Link>
+              <Link
+                to="/about"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
                 About Us
-              </a>
-              <a
-                href="#services-products"
+              </Link>
+              <Link
+                to="/services"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
-                Services & Products
-              </a>
-              <a
-                href="#testimonials"
+                Services
+              </Link>
+              <Link
+                to="/products"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
+              >
+                Products
+              </Link>
+              <Link
+                to="/testimonials"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
                 Testimonials
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-2.5 px-3 rounded-lg hover:bg-sky-50 hover:text-sky-700 transition"
               >
                 Contact Us
-              </a>
+              </Link>
               <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
                 <a
                   href="#contact"
@@ -1067,19 +1136,19 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-                <a
-                  href="#services-products"
+                <Link
+                  to="/services"
                   className="w-full sm:w-auto text-center bg-sky-700 hover:bg-sky-800 px-7 py-3 rounded-lg text-white font-semibold transition shadow-md"
                 >
                   Services & Products
-                </a>
+                </Link>
 
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="w-full sm:w-auto text-center border border-white hover:bg-white hover:text-black px-7 py-3 rounded-lg font-semibold transition"
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -1662,24 +1731,34 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
               </h5>
               <ul className="space-y-2.5 text-xs">
                 <li>
-                  <a href="#home" className="hover:text-sky-400 transition flex items-center gap-2">
+                  <Link to="/" className="hover:text-sky-400 transition flex items-center gap-2">
                     <span className="text-sky-500">•</span> Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#about" className="hover:text-sky-400 transition flex items-center gap-2">
+                  <Link to="/about" className="hover:text-sky-400 transition flex items-center gap-2">
                     <span className="text-sky-500">•</span> About Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#services-products" className="hover:text-sky-400 transition flex items-center gap-2">
-                    <span className="text-sky-500">•</span> Services & Products
-                  </a>
+                  <Link to="/services" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Services
+                  </Link>
                 </li>
                 <li>
-                  <a href="#contact" className="hover:text-sky-400 transition flex items-center gap-2">
+                  <Link to="/products" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Products
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/testimonials" className="hover:text-sky-400 transition flex items-center gap-2">
+                    <span className="text-sky-500">•</span> Testimonials
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-sky-400 transition flex items-center gap-2">
                     <span className="text-sky-500">•</span> Contact Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
