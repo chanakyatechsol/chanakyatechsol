@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 function ServiceImagePlaceholder({ src, alt, className }) {
   const [hasError, setHasError] = useState(false);
@@ -530,24 +531,24 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
 
   useEffect(() => {
     const path = location.pathname;
-    let title = "Chanakya Technical Solutions | Water & Wastewater Treatment Plants";
-    let description = "Chanakya Technical Solutions offers turnkey Water Treatment Plants (WTP), Sewage Treatment Plants (STP), Effluent Treatment Plants (ETP), Reverse Osmosis (RO) Plants, and Pretreatment systems in India and internationally.";
+    let title = "Chanakya Technical Solutions | Turnkey WTP, STP, ETP & RO Plants";
+    let description = "Chanakya Technical Solutions offers turnkey Water Treatment Plants (WTP), Sewage Treatment Plants (STP), Effluent Treatment Plants (ETP), Reverse Osmosis (RO) Plants, and ZLD systems in Hyderabad and worldwide.";
 
     if (path === "/about") {
-      title = "About Us | Chanakya Technical Solutions";
-      description = "Learn about Chanakya Technical Solutions - specialized engineering firm providing turnkey water and wastewater treatment, environmental engineering, and technical audits.";
+      title = "About Us | Chanakya Technical Solutions - Water & Wastewater Engineers";
+      description = "Learn about Chanakya Technical Solutions - leading engineering firm in Hyderabad providing turnkey water and wastewater management, environmental engineering, and technical audits.";
     } else if (path === "/services" || path === "/services-products") {
-      title = "Water & Wastewater Treatment Services | Chanakya Technical Solutions";
-      description = "Specialized technical services including WTP, STP, ETP, RO Plants, ZLD, Ultrafiltration, MBR, and Specialty Chemical treatment.";
+      title = "Water & Wastewater Treatment Services | WTP, STP, ETP & ZLD Plants";
+      description = "Specialized industrial technical services including WTP, STP, ETP, RO Plants, ZLD, Ultrafiltration, MBR membranes, and Specialty Chemical treatment.";
     } else if (path === "/products") {
-      title = "Turnkey Products & Systems | Chanakya Technical Solutions";
-      description = "Turnkey product lineup: Containerized Water Treatment Plants, High Recovery RO Systems, Clarifiers, DAF units, and Descaling Chemicals.";
+      title = "Turnkey Products & Systems | Pretreatment, RO, MBR & Chemicals";
+      description = "Explore our turnkey product lineup: Containerized Water Treatment Plants, High Recovery RO Systems, Clarifiers, DAF units, and Descaling Chemicals.";
     } else if (path === "/testimonials") {
-      title = "Client Appreciation Letters & Testimonials | Chanakya Technical Solutions";
-      description = "Client appreciation letters and project completion certificates from leading pharmaceutical, industrial, and international clients.";
+      title = "Client Appreciation Letters & Project Certificates | Chanakya Tech";
+      description = "View client appreciation letters and project completion certificates from leading pharmaceutical, industrial, and international clients.";
     } else if (path === "/contact") {
-      title = "Contact Us | Chanakya Technical Solutions";
-      description = "Contact Chanakya Technical Solutions in Hyderabad for direct technical consultation, water audits, turn-key project execution, and support.";
+      title = "Contact Us | Chanakya Technical Solutions - Water Engineers Hyderabad";
+      description = "Contact Chanakya Technical Solutions in Hyderabad for direct technical consultation, industrial water balance audits, turn-key project execution, and support.";
     }
 
     document.title = title;
@@ -975,8 +976,39 @@ export default function ChanakyaTechnicalSolutionsWebsite() {
   const whatsappUrl =
     "https://wa.me/919490316328?text=Hello%20Chanakya%20Technical%20Solutions%2C%20I%20would%20like%20to%20know%20more%20about%20your%20water%20and%20waste%20treatment%20services.";
 
-  return (
-    <div className="font-sans text-gray-800 bg-white min-h-screen">
+    let seoTitle = "Chanakya Technical Solutions | Turnkey WTP, STP, ETP & RO Plants";
+    let seoDesc = "Chanakya Technical Solutions offers turnkey Water Treatment Plants (WTP), Sewage Treatment Plants (STP), Effluent Treatment Plants (ETP), Reverse Osmosis (RO) Plants, and ZLD systems in Hyderabad and worldwide.";
+    let seoUrl = `https://www.chanakyatechsol.com${location.pathname === "/" ? "" : location.pathname}`;
+
+    if (location.pathname === "/about") {
+      seoTitle = "About Us | Chanakya Technical Solutions - Water & Wastewater Engineers";
+      seoDesc = "Learn about Chanakya Technical Solutions - leading engineering firm in Hyderabad providing turnkey water and wastewater management, environmental engineering, and technical audits.";
+    } else if (location.pathname === "/services" || location.pathname === "/services-products") {
+      seoTitle = "Water & Wastewater Treatment Services | WTP, STP, ETP & ZLD Plants";
+      seoDesc = "Specialized industrial technical services including WTP, STP, ETP, RO Plants, ZLD, Ultrafiltration, MBR membranes, and Specialty Chemical treatment.";
+    } else if (location.pathname === "/products") {
+      seoTitle = "Turnkey Products & Systems | Pretreatment, RO, MBR & Chemicals";
+      seoDesc = "Explore our turnkey product lineup: Containerized Water Treatment Plants, High Recovery RO Systems, Clarifiers, DAF units, and Descaling Chemicals.";
+    } else if (location.pathname === "/testimonials") {
+      seoTitle = "Client Appreciation Letters & Project Certificates | Chanakya Tech";
+      seoDesc = "View client appreciation letters and project completion certificates from leading pharmaceutical, industrial, and international clients.";
+    } else if (location.pathname === "/contact") {
+      seoTitle = "Contact Us | Chanakya Technical Solutions - Water Engineers Hyderabad";
+      seoDesc = "Contact Chanakya Technical Solutions in Hyderabad for direct technical consultation, industrial water balance audits, turn-key project execution, and support.";
+    }
+
+    return (
+      <div className="font-sans text-gray-800 bg-white min-h-screen">
+        <Helmet>
+          <title>{seoTitle}</title>
+          <meta name="description" content={seoDesc} />
+          <link rel="canonical" href={seoUrl} />
+          <meta property="og:title" content={seoTitle} />
+          <meta property="og:description" content={seoDesc} />
+          <meta property="og:url" content={seoUrl} />
+          <meta name="twitter:title" content={seoTitle} />
+          <meta name="twitter:description" content={seoDesc} />
+        </Helmet>
       {/* Executive Header Bar with Background River Journey Animation */}
       <header className="border-b border-sky-200/60 sticky top-0 bg-white/80 backdrop-blur-md z-50 shadow-sm relative overflow-hidden">
         {/* Background Animation Canvas (Desktop/Tablet Only) */}
